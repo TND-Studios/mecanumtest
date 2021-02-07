@@ -1,30 +1,28 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+//import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Servo;
+//import edu.wpi.first.wpilibj.Timer;
 
 public class Controller{
-    @SuppressWarnings( {"PMD.UnusedPrivateField", "PMD.SingularField"} )
-
     // THE VALUES FOR THE DOUBLES BELOW NEED TO BE CONFIGURED MANUALLY
 
     //main controller
-    private XboxController xcontroller;
+    public XboxController xcontroller;
     private Wheels wheels;
     //private int intakeVal;
     //    CONVEYOR CODE DELETED (????)
 
     private Intake intake;
     private int intakePort = 2;
-    private HookExtension hook;
+    
     private int hookPort = 9;
     private int hookPortTwo = 10;
     private int shooterPortOne = 7;
@@ -37,13 +35,22 @@ public class Controller{
     private AnalogInput m_ultrasonic;
 
     private Boolean hookUp; 
-    private String desiredColor; 
-    private Boolean colorServoDeployed = false; 
-    public Boolean spunTillThree = false;
-    private Servo colorServo; 
+    private HookExtension hook;
+
     private VisionComp visionComp;
 
     private DigitalInput dioOne, dioTwo;
+
+
+    private ChallengeOne cOne;
+    private ChallengeTwo cTwo;
+    private ChallengeThree cThree;
+    private ChallengeFour cFour;
+    private ChallengeFive cFive;
+    //-1 = testing, 1 = challenge one, 2 = challenge 2... 5 = challenge 5
+    private int challengeNumber = -1; 
+
+
 
     public void controllerInit()
     {
@@ -55,16 +62,8 @@ public class Controller{
         wheels = new Wheels(6,8,3,1);
         xcontroller = new XboxController(0);
 
-        colorServo = new Servo(0); // UPDATE PORT ACCORDINGLY
-        colorServo.set(0);
         shooter = new Shooter(shooterPortOne, shooterPortTwo);
         visionComp = new VisionComp();
-        //intakePort = ;
-        //hookPort = ;
-        //shooterVal = ;
-
-        //visionParam = ;
-        //vision = new Vision(visionParam);
 
 
         dioOne = new DigitalInput(0);
@@ -74,9 +73,14 @@ public class Controller{
 
         hook = new HookExtension(hookPort, hookPortTwo);
 
-
-        spunTillThree = false;
         hookUp = false;
+
+        cOne = new ChallengeOne(this);
+        cTwo = new ChallengeTwo(this);
+        cThree = new ChallengeThree(this);
+        cFour = new ChallengeFour(this);
+        cFive = new ChallengeFive(this);
+
     }
     
     public void UpdateTeleop() {
@@ -90,94 +94,91 @@ public class Controller{
         //get value from the ultrasonic sensor mounted in the front of the robot
         //double ultrasonicReading = getUltraSonicReading();
 
-        //get value from the color sensor 
-        //String detectedColor = colorSensor.ReturnColor();
 
-        //get desired color from FMS
-        desiredColor = DriverStation.getInstance().getGameSpecificMessage();
+
 
         //logic code below
-        //SmartDashboard.putBoolean("spin next frame", colorWheel.spinNextFrame);
-        SmartDashboard.putBoolean("servo deployed", colorServoDeployed);
-        SmartDashboard.putBoolean("spun 3 times", spunTillThree);
-        SmartDashboard.putString("gdata", desiredColor);
-        SmartDashboard.putNumber("ultra sonic reading", getUltraSonicReading());
-        SmartDashboard.putNumber("angle facing", getAngleFacing());
+
+        switch(challengeNumber) {
+            case -1: break;
+            case 1: cOne.UpdateTeleop(); break;
+            case 2: cTwo.UpdateTeleop();  break;
+            case 3: cThree.UpdateTeleop();  break;
+            case 4: cFour.UpdateTeleop();  break;
+            case 5: cFive.UpdateTeleop();  break;
+        }
+        // SmartDashboard.putNumber("ultra sonic reading", getUltraSonicReading());
+        // SmartDashboard.putNumber("angle facing", getAngleFacing());
         
-        wheels.drive(xcontroller.getY(Hand.kLeft), xcontroller.getY(Hand.kRight));
+        // setDriveSpeed(xcontroller.getY(Hand.kLeft), xcontroller.getY(Hand.kRight));
         
 
-        //drum in 
-        if(xcontroller.getYButtonPressed())
-        {
-            wheels.inverse();
+        // //drum in 
+        // if(xcontroller.getYButtonPressed())
+        // {
+        //     wheels.inverse();
 
-        }
-        if(xcontroller.getBButtonPressed())
-        {
-            if(hookUp)
-            {
-                hook.lower();
-                hookUp = false;
-            }
-            if(!hookUp)
-            {
-                hook.raise();
-                hookUp = true;
-            }
-        }
+        // }
+        // if(xcontroller.getBButtonPressed())
+        // {
+        //     if(hookUp)
+        //     {
+        //         hook.lower();
+        //         hookUp = false;
+        //     }
+        //     if(!hookUp)
+        //     {
+        //         hook.raise();
+        //         hookUp = true;
+        //     }
+        // }
 
 
-        if (xcontroller.getBButtonReleased()) {
-            hook.stop();
-        }
+        // if (xcontroller.getBButtonReleased()) {
+        //     hook.stop();
+        // }
      
         
 
         
-        if(xcontroller.getBumperPressed(Hand.kLeft))
-        {
-            intake.drive(0.85);
-        }
-        if(xcontroller.getBumperReleased(Hand.kLeft))
-        {
-            intake.drive(0);
-        }
+        // if(xcontroller.getBumperPressed(Hand.kLeft))
+        // {
+        //     intake.drive(0.85);
+        // }
+        // if(xcontroller.getBumperReleased(Hand.kLeft))
+        // {
+        //     intake.drive(0);
+        // }
   
-        if(xcontroller.getBumperPressed(Hand.kRight))
-        {
-            intake.drive(-0.85);
-        }
-        if(xcontroller.getBumperReleased(Hand.kRight))
-        {
-            intake.drive(0);
-        }
-        //inverse wheels
+        // if(xcontroller.getBumperPressed(Hand.kRight))
+        // {
+        //     intake.drive(-0.85);
+        // }
+        // if(xcontroller.getBumperReleased(Hand.kRight))
+        // {
+        //     intake.drive(0);
+        // }
+        // //inverse wheels
      
-        //left trigger; revs up shooter
-        if(xcontroller.getTriggerAxis(Hand.kLeft)>.1)
-        {
-            shooter.charge(0.8); //big wheel
-        } else {
-            shooter.charge(0);
-        }
-        // right trigger; controls shooter
+        // //left trigger; revs up shooter
+        // if(xcontroller.getTriggerAxis(Hand.kLeft)>.1)
+        // {
+        //     shooter.charge(0.8); //big wheel
+        // } else {
+        //     shooter.charge(0);
+        // }
+        // // right trigger; controls shooter
         
-        if(xcontroller.getTriggerAxis(Hand.kRight)>0)
-        {
-            shooter.fire(-0.4); //blue wheel
-        } else {
-            shooter.fire(0);
-        }
+        // if(xcontroller.getTriggerAxis(Hand.kRight)>0)
+        // {
+        //     shooter.fire(-0.4); //blue wheel
+        // } else {
+        //     shooter.fire(0);
+        // }
 
 
 
-        }
-
-    private int autoSegment = 0;
-    
-    private Timer timer;
-    private Timer timerTwo;
+    }    
 
     public void UpdateAutonomous() {
         // code for all situations - DO NOT COMMENT OUT
@@ -185,212 +186,18 @@ public class Controller{
         SmartDashboard.putNumber("Back Right Encoder Distance Travelled (ft)", getDistanceTravelled("bR"));
         SmartDashboard.putNumber("Angle Facing From Gyro (degrees)", getAngleFacing());
         SmartDashboard.putNumber("Ultrasonic Reading (feet):", getUltraSonicReading() / 12);
-        SmartDashboard.putNumber("Segment", autoSegment);
-
-        //MAKE SURE NO ERRORS ARE PRESENT AFTER COMMENTING OUT LINES
-
-        // THE FOLLOWING SEGMENT OF CODE CAN BE RUN WITHOUT ANY SENSORS (Move forward 1 sec, shoot)
-        if (autoSegment == 0) {
-            timerTwo.start();
-            autoSegment++;
-        } else if (autoSegment == 1) {
-            if (timerTwo.get() < 1) {
-                wheels.drive(0.7, 0.7);
-                shooter.charge(0.8);
-            } else {
-                wheels.drive (0, 0);
-                timer.start();
-                autoSegment++;
-            }
-        } else if (autoSegment == 2) {
-            wheels.drive(0, 0);
-            shooter.charge(0.8); // big
-            
-            
-            if (timer.get() < 1 && timer.get() > 0.5) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 2 && timer.get() < 2.5) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 3.5 && timer.get() < 4) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 4) {
-                shooter.fire(0);
-                shooter.charge(0);
-                intake.drive(0);
-                autoSegment++;
-            } else {
-                shooter.fire(0);
-                intake.drive(0.85);
-            }
-            
+        
+        
+        switch(challengeNumber) {
+            case -1: break;
+            case 1: cOne.UpdateAutonomous(); break;
+            case 2: cTwo.UpdateAutonomous();  break;
+            case 3: cThree.UpdateAutonomous();  break;
+            case 4: cFour.UpdateAutonomous();  break;
+            case 5: cFive.UpdateAutonomous();  break;
         }
 
-        // THE CODE SEGMENT BELOW REQUIRES ULTRASONIC SENSOR
-        /*
-        if (autoSegment == 0) {
-            if (getUltraSonicReading() > 100) {
-                wheels.drive(0.7, 0.7);
-                shooter.charge(0.8); // big
-            } else if (getUltraSonicReading() < 100) {
-                wheels.drive(0, 0);
-                timer.start();
-                autoSegment++;
-            } 
-        } else if (autoSegment == 1) {
-            wheels.drive(0, 0);
-            shooter.charge(0.8); // big
-            
-            
-            if (timer.get() < 1 && timer.get() > 0.5) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 2 && timer.get() < 2.5) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 3.5 && timer.get() < 4) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 4) {
-                shooter.fire(0);
-                shooter.charge(0);
-                intake.drive(0);
-                autoSegment++;
-            } else {
-                shooter.fire(0);
-                intake.drive(0.85);
-            }
-            
-        }
-        
 
-        //ALL THE CODE BELOW REQUIRES ENCODERS (CASES 1 + 2)
-        /*
-        // case 1 (right in front of target) POSITION SO BACK OF ROBOT IS TOUCHING LINE. MOVE FORWARD ONE FOOT AND SHOOT
-
-            if (getDistanceTravelled("fL") <= 1 && autoSegment == 0) {
-                wheels.drive(0.7, 0.7);
-                shooter.charge(0.8);
-            } else if (autoSegment == 1) {
-                wheels.drive(0, 0);
-                shooter.charge(0.8); // big
-                
-                if (timer.get() == 0) {
-                    timer.start();
-                }
-                
-                if (timer.get() < 1 && timer.get() > 0.5) {
-                    shooter.fire(-0.4);
-                } else if (timer.get() > 2 && timer.get() < 2.5) {
-                    shooter.fire(-0.4);
-                } else if (timer.get() > 3.5 && timer.get() < 4) {
-                    shooter.fire(-0.4);
-                } else if (timer.get() > 4) {
-                    shooter.fire(0);
-                    shooter.charge(0);
-                    intake.drive(0);
-                } else {
-                    shooter.fire(0);
-                    intake.drive(0.85);
-                }
-                
-            } else {
-                wheels.drive(0, 0);
-                autoSegment++;
-            }
-            
-        
-            // case 2 (on the side closer to target) POSITION SO FRONT OF ROBOT IS TOUCHING LINE. MAKE SURE ROBOT IS FACING STRAIGHT AHEAD. IT WILL DRIVE BACK AND PICK UP 3 BALLS 
-        /*
-            if (autoSegment == 0) {
-            if (Math.abs(getAngleFacing()) < 15) {
-                wheels.drive(-.7,.7); //turn left
-            } else {
-                wheels.drive(0,0);
-                autoSegment++;
-            }
-        } else if (autoSegment == 1 && timer.get() < 5) {
-            wheels.drive(0,0);
-            if (timer.get() == 0) {
-                timer.start();
-            }
-            //shoot the three pre loaded balls
-            if (timer.get() < 1 && timer.get() > 0.5) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 2 && timer.get() < 2.5) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 3.5 && timer.get() < 4) {
-                shooter.fire(-0.4);
-            } else if (timer.get() > 4) {
-                shooter.fire(0);
-                shooter.charge(0);
-                autoSegment++;
-                intake.drive(0);
-            } else {
-                shooter.fire(0);
-                intake.drive(0.85);
-            }
-        } else if (autoSegment == 2) {
-            if (Math.abs(getAngleFacing()) > 1) {
-                wheels.drive(0.7,-0.7); //turn right
-            } else {
-                wheels.drive(0, 0);
-                autoSegment++;
-            }
-        } else if (autoSegment == 3) {
-            wheels.resetRotations();
-            autoSegment++;
-        } else if (autoSegment == 4) {
-            //BACK 10 FT
-            if (Math.abs(getDistanceTravelled("fL")) < 10) {
-                wheels.drive(-0.5, -0.5);
-                intake.drive(0.85);
-            } else {
-                wheels.drive(0, 0);
-                intake.drive(0);
-                autoSegment++;
-            }
-        } else if (autoSegment == 5) {
-            wheels.resetRotations();
-            autoSegment++;
-        } else if (autoSegment == 6) {
-            //FORWARD 10 FT
-            if (Math.abs(getDistanceTravelled("fL")) < 10) {
-                wheels.drive(0.7, 0.7);
-                intake.drive(0.85);
-            } else {
-                wheels.drive(0, 0);
-                intake.drive(0);
-                autoSegment++;
-            }
-        } else if (autoSegment == 7) {
-            if (Math.abs(getAngleFacing()) < 15) {
-                wheels.drive(-.7,.7); //turn left
-            } else {
-                wheels.drive(0,0);
-                autoSegment++;
-            }
-        } else if (autoSegment == 8 && timer.get() < 5) {
-            wheels.drive(0,0);
-            if (timerTwo.get() == 0) {
-                timerTwo.start();
-            }
-            //shoot the three pre loaded balls
-            if (timerTwo.get() < 1 && timerTwo.get() > 0.5) {
-                shooter.fire(-0.4);
-            } else if (timerTwo.get() > 2 && timerTwo.get() < 2.5) {
-                shooter.fire(-0.4);
-            } else if (timerTwo.get() > 3.5 && timerTwo.get() < 4) {
-                shooter.fire(-0.4);
-            } else if (timerTwo.get() > 4) {
-                shooter.fire(0);
-                shooter.charge(0);
-                autoSegment++;
-                intake.drive(0);
-            } else {
-                shooter.fire(0);
-                intake.drive(0.85);
-            }
-        }
-        */
-        
-        
     }
 
     public int AutonomousTurnCheck() {
@@ -419,16 +226,35 @@ public class Controller{
 
     public double getUltraSonicReading()
     {
+        //                return value is in inches
         return m_ultrasonic.getValue()*0.125f/2.54f;
     }
 
     public double getAngleFacing() 
     {
+        // return value is in degrees
         return ahrs.getAngle();
     }
     
     public double getDistanceTravelled(String pos) {
-        // return                  rotations * 2 * pi * r * (1 foot / 12 inches)
-        return wheels.getRotations(pos) * 2 * 3.1415926535 * 3 / 12;
+        // return             rotations * 2 * pi           * r * (1 foot / 12 inches)
+        return wheels.getRotations(pos) * 2 * 3.1415926535 * 3  * 1 / 12;
     }
+
+    public void setDriveSpeed(double l, double r) {
+        wheels.drive(l, r);
+    }
+
+    public void setIntakeSpeed(double v) {
+        intake.drive(v);
+    }
+
+    public void setShooterSpeed(double v) {
+        shooter.charge(v);
+    }
+
+    public void setFeederSpeed(double v) {
+        shooter.fire(v);
+    }
+
 }
