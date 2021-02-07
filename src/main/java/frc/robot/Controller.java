@@ -10,31 +10,32 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
+
 public class Controller{
+    @SuppressWarnings( {"PMD.UnusedPrivateField", "PMD.SingularField"} )
+
     // THE VALUES FOR THE DOUBLES BELOW NEED TO BE CONFIGURED MANUALLY
 
     //main controller
     private XboxController xcontroller;
     private Wheels wheels;
-    private int intakeVal;
-    //    CONVEYOR CODE DELETED
+    //private int intakeVal;
+    //    CONVEYOR CODE DELETED (????)
+
     private Intake intake;
-    private int intakePort;
-    private int wheelPort1, wheelPort2, wheelPort3, wheelPort4;
+    private int intakePort = 2;
     private HookExtension hook;
-    private int hookPort;
-    private int hookPortTwo;
-    private int shooterPortOne, shooterPortTwo;
-    //private Shooter revShoot;
+    private int hookPort = 9;
+    private int hookPortTwo = 10;
+    private int shooterPortOne = 7;
+    private int shooterPortTwo = 4;
+
+
     private Shooter shooter;
-    private ColorWheel colorWheel;
-    private int colorPort = 7;
+
     private AHRS ahrs;
     private AnalogInput m_ultrasonic;
-    private ColorSensor colorSensor; 
-    //private ColorArm colorArm;
-    //private int servoPWMChannel;
-    //private double upServoVal, downServoVal;
+
     private Boolean hookUp; 
     private String desiredColor; 
     private Boolean colorServoDeployed = false; 
@@ -53,16 +54,15 @@ public class Controller{
         // fL, fR, bL, bR
         wheels = new Wheels(6,8,3,1);
         xcontroller = new XboxController(0);
-        colorSensor = new ColorSensor();
+
         colorServo = new Servo(0); // UPDATE PORT ACCORDINGLY
         colorServo.set(0);
-        shooter = new Shooter(7, 4);
+        shooter = new Shooter(shooterPortOne, shooterPortTwo);
         visionComp = new VisionComp();
         //intakePort = ;
         //hookPort = ;
         //shooterVal = ;
-        //colorPort = ;
-        //colorWheelVal = ;
+
         //visionParam = ;
         //vision = new Vision(visionParam);
 
@@ -70,13 +70,11 @@ public class Controller{
         dioOne = new DigitalInput(0);
         dioTwo = new DigitalInput(1);
 
-        intake = new Intake(2);
+        intake = new Intake(intakePort);
 
-        hook = new HookExtension(9, 10);
+        hook = new HookExtension(hookPort, hookPortTwo);
 
-        colorWheel = new ColorWheel(5, colorSensor);
 
-        // colorArm = new ColorArm(servoPWMChannel);
         spunTillThree = false;
         hookUp = false;
     }
@@ -108,40 +106,7 @@ public class Controller{
         
         wheels.drive(xcontroller.getY(Hand.kLeft), xcontroller.getY(Hand.kRight));
         
-        if (xcontroller.getAButtonPressed() || colorWheel.spinNextFrame)
-        {
-            //System.out.println("a button pressed is " + xcontroller.getAButtonPressed() + "while the spin next frame is " + colorWheel.spinNextFrame);
-            if (colorServoDeployed) {
-                //System.out.println("Spun till 3? " + spunTillThree.toString());
-                if (!spunTillThree) {
-                    colorWheel.spinUntilThree(this);
-                    if (colorWheel.spinNextFrame == false) {
-                        colorServo.set(0);
-                        colorServoDeployed = false;
-                    }
-                    
-                    /*
-                    SmartDashboard.putBoolean("spin 3", true);
-                    SmartDashboard.putBoolean("spin color", false);
-                    System.out.println("spinning till 3 since desiredColor is '" + desiredColor + "'");
-                    */
-                } else {
-                    colorWheel.spinToColor(desiredColor);
-                    if (colorWheel.spinNextFrame == false) {
-                        colorServo.set(0);
-                        colorServoDeployed = false;
-                    }
-                    /*
-                    SmartDashboard.putBoolean("spin 3", false);
-                    SmartDashboard.putBoolean("spin color", true);
-                    System.out.println("spinning to color"); */
-                }
-            } else {
-                colorServo.set(1);
-                colorServoDeployed = true;
-            }
-            
-        }
+
         //drum in 
         if(xcontroller.getYButtonPressed())
         {

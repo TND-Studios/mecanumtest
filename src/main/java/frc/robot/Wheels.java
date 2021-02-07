@@ -29,12 +29,12 @@ public class Wheels {
 
     public double getRotations(String location) { 
         if (location == "fL") {
-            int temp = frontLeft.getSelectedSensorPosition();
+            double temp = frontLeft.getSelectedSensorPosition();
             double val = temp / 4096;
             return val;
         }
         if (location == "bR") {
-            int temp = backRight.getSelectedSensorPosition();
+            double temp = backRight.getSelectedSensorPosition();
             double val = temp / 4096;
             return val;
             

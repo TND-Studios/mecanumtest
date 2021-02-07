@@ -5,16 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//TESTING MY BRANCH lk
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+/*
 import com.ctre.phoenix.motorcontrol.can.*;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+*/
 
 
 /**
@@ -110,8 +111,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    //wheels.drive(controller1.getY(Hand.kLeft), controller1.getY(Hand.kRight));
+
     masterController.UpdateTeleop();
+
+
+    //wheels.drive(controller1.getY(Hand.kLeft), controller1.getY(Hand.kRight));
     //SmartDashboard.putString("[left joystick] ", "value: " + controller.getY(Hand.kLeft));
     //SmartDashboard.putString("[right joystick] ", "value: " + controller.getY(Hand.kRight));
     //SmartDashboard.putString("Position of mag encoder", "value: " + wheels.getRotations("fL"));
