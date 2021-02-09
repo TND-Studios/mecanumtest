@@ -20,9 +20,11 @@ public class ChallengeFour {
 
     //put constants here
     private static double FEEDER_SPEED = -0.4;
+    private static double INTAKE_SPEED = 0.85;
     private static double ZERO = 0;
 
     //put variables here
+    private double shooterSpeed; // should be incremented when we move further back from target
 
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
@@ -91,12 +93,49 @@ public class ChallengeFour {
         
             Explain your controls here, so the driver knows what to do. 
                 > Drive the robot using the left and right joysticks to control the speed of their respective wheels. 
+                > Rev up the shooter (big wheel) using left trigger and feed (blue wheel) using right trigger
+                > Start intake using left bumper, reverse intake using right bumper
         
         */
 
         // This is a very basic way of driving using two joysticks. Think about other ways the robot can be driven. Which would be the easiest and/or most efficient for the driver?
         controller.setDriveSpeed(xController.getY(Hand.kLeft), xController.getY(Hand.kRight));
+        
+        // Use triggers to control launcher
 
+        // Left trigger 
+        if(xController.getTriggerAxis(Hand.kLeft) > 0) {
+            controller.setShooterSpeed(shooterSpeed);
+        }
+        else {
+            controller.setShooterSpeed(ZERO);
+        }
+
+        // Right trigger
+        if(xController.getTriggerAxis(Hand.kRight) > 0) {
+            controller.setFeederSpeed(FEEDER_SPEED);
+        }
+        else {
+            controller.setFeederSpeed(ZERO);
+        }
+
+        // Use left and right bumpers to control intake
+
+        // Left bumper
+        if(xController.getBumperPressed(Hand.kLeft)) {
+            controller.setIntakeSpeed(INTAKE_SPEED);
+        }
+        if(xController.getBumperReleased(Hand.kLeft)) {
+            controller.setIntakeSpeed(ZERO);
+        }
+
+        // Right bumper (reverse intake)
+        if(xController.getBumperPressed(Hand.kRight)) {
+            controller.setIntakeSpeed(-1 * INTAKE_SPEED);
+        }
+        if(xController.getBumperReleased(Hand.kRight)) {
+            controller.setIntakeSpeed(ZERO);
+        }
 
     }
 
