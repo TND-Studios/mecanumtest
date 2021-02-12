@@ -1,4 +1,4 @@
-package frc.robot;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            package frc.robot;
 
 //import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -32,6 +32,6 @@ public class HookExtension
 
     public void stop() {
         motor1.set(0);
-        motor2.set(0);
+                                                                                                                                                                                                  motor2.set(0);
     }
 }

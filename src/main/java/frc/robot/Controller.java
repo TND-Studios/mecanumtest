@@ -1,15 +1,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-//import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-//import edu.wpi.first.wpilibj.Servo;
-//import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Controller{
     // THE VALUES FOR THE DOUBLES BELOW NEED TO BE CONFIGURED MANUALLY
@@ -256,5 +256,6 @@ public class Controller{
     public void setFeederSpeed(double v) {
         shooter.fire(v);
     }
+   
 
 }
