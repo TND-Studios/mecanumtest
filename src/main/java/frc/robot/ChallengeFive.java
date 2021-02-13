@@ -15,18 +15,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.Timer;
 
 
-
+//faiufoahuifahifhe
 public class ChallengeFive {
 
     //put constants here
     private static double FEEDER_SPEED = -0.4;
     private static double ZERO = 0;
-
+   private static double small = 0.5;//move the variable somewhere else
     //put variables here
 
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
-
+            
     /* 
         Instructions on how to get data from the robot:
             controller.getAngleFacing() returns a double indicating which angle (in degrees) the robot is facing
@@ -37,7 +37,7 @@ public class ChallengeFive {
             controller.setDriveSpeed(double leftSpeed, double rightSpeed) sets the speed of the right and left wheels. Only the wheels in the back will be powered. 
                                                                           The values MUST be between (0.9 and -0.9) (negative is backwards).
             controller.setIntakeSpeed(double speed) sets the speed of the intake. Values should be between (-0.9 and 0.9) 
-
+//Dillon note: set a button to toggle the speed of intake? The button will not move the intake, the joystick will
             The shooter works in two seperate parts. 
             First, there is a big and strong wheel which actually launches the balls. This wheel must be charged up for 0.5 - 1.5 seconds before shooting.
             controller.setShooterSpeed(double speed) controls the speed of the big shooter wheel. This value should be between (0.4 and 0.9).             
@@ -80,7 +80,7 @@ public class ChallengeFive {
 
     //this is called every 20 milliseconds during autonomous
     public void UpdateAutonomous() {
-
+        
     }
 
 
@@ -92,14 +92,71 @@ public class ChallengeFive {
             Explain your controls here, so the driver knows what to do. 
                 > Drive the robot using the left and right joysticks to control the speed of their respective wheels. 
         
+        
         */
-
+                                                                                                                                                                                                                                                                                                                                controller.setFeederSpeed(0.85);//think this is how we set values....
         // This is a very basic way of driving using two joysticks. Think about other ways the robot can be driven. Which would be the easiest and/or most efficient for the driver?
         controller.setDriveSpeed(xController.getY(Hand.kLeft), xController.getY(Hand.kRight));
+        //do this if it suits your code y'all! Dillon.
+        
+       if(xController.getBumperPressed(null))
+       {
+           //intake.drive(-0.4);
+       }
+       else
+       {
+           //intake.drive(0);
+    }
+//this if statement does not descirbe what the controls will be, I have this as an example to use as reference.
+        if(xController.getBButtonPressed())
+        {
+            System.out.println("HI");
+           
+            controller.setShooterSpeed(small);
+        }
 
+        //this if statement does not descirbe what the controls will be, I have this as an example to use as reference.
+
+        if(xController.getX(Hand.kRight) > 0)
+        {
+            controller.setIntakeSpeed(-0.4);
+        }
+        else
+        {
+              controller.setIntakeSpeed(0);
+        }
+        if(xController.getX(Hand.kRight) < 0)
+        {
+            controller.setIntakeSpeed(0.4);
+        }
+        else
+        {
+              controller.setIntakeSpeed(0);
+        }
+
+        
+if(xController.getY(Hand.kLeft) > 0)
+{
+   // controller.setDriveSpeed(0.9, 0.9);
+   //left joystick moves UP.
+   //Hand.kRight is RIGHT Joystick
+}
+if(xController.getY(Hand.kLeft) < 0)
+{
+    
+    //left joystick moves down
+}
+if(xController.getX(Hand.kLeft) > 0)
+{
+//left joystick moves right
+}
+if(xController.getX(Hand.kLeft) < 0)
+{
+//left joystick moves left
+}
 
     }
-
+ 
 
 
 }
