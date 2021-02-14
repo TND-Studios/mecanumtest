@@ -24,7 +24,7 @@ public class ChallengeFour {
     private static double ZERO = 0;
 
     //put variables here
-    private double shooterSpeed; // should be incremented when we move further back from target
+    private double shooterSpeed = 0.5; // incremented when we move further back from target
 
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
@@ -50,6 +50,9 @@ public class ChallengeFour {
 
     //this is the xbox controller which will be plugged into the drive laptop to control the robot
     private XboxController xController;
+    private double leftStickX = xController.getX(Hand.kLeft);
+    private double leftStickY = xController.getY(Hand.kLeft);
+    private double rightStickY = xController.getY(Hand.kRight);
 
     /* 
         The documentation for the xbox controller can be found here: https://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/XboxController.html
@@ -92,17 +95,30 @@ public class ChallengeFour {
         /* 
         
             Explain your controls here, so the driver knows what to do. 
-                > Drive the robot using the left and right joysticks to control the speed of their respective wheels. 
+                > Drive the robot using the left and right joysticks to control the speed of their respective wheels OR left joystick only
                 > Rev up the shooter (big wheel) using left trigger and feed (blue wheel) using right trigger
+                > Increase/decrease shooter speed using right joystick
                 > Start intake using left bumper, reverse intake using right bumper
         
         */
 
-        // This is a very basic way of driving using two joysticks. Think about other ways the robot can be driven. Which would be the easiest and/or most efficient for the driver?
-        controller.setDriveSpeed(xController.getY(Hand.kLeft), xController.getY(Hand.kRight));
+        // Tank drive (move each set of wheels forward/backward using left/right joysticks)
+        // controller.setDriveSpeed(leftStickY, rightStickY); [uncomment to use]
         
-        // Use triggers to control launcher
+        // Arcade drive (move all wheels using left joystick)
+        // -- rotate left/right when leftStick moved left/right, go forward/backward when leftStick moved up/down
+        // -- add rotation to translation for both sets of wheels
+        // -- if leftStick is moved anywhere to left, right wheels should move faster than left wheels
+        // -- if leftStick is moved anywhere to right, left wheels should move faster than right wheels
+        // -- decrease leftStickX so that speed does not go out of bounds?
+        controller.setDriveSpeed(leftStickY + leftStickX * 0.2, leftStickY - leftStickX * 0.2);
 
+        // Use right joystick to increase/decrease launcher speed
+        if(rightStickY != 0) {
+            shooterSpeed += rightStickY;
+        }
+
+        // Use triggers to control shooter
         // Left trigger 
         if(xController.getTriggerAxis(Hand.kLeft) > 0) {
             controller.setShooterSpeed(shooterSpeed);
@@ -110,7 +126,6 @@ public class ChallengeFour {
         else {
             controller.setShooterSpeed(ZERO);
         }
-
         // Right trigger
         if(xController.getTriggerAxis(Hand.kRight) > 0) {
             controller.setFeederSpeed(FEEDER_SPEED);
@@ -120,7 +135,6 @@ public class ChallengeFour {
         }
 
         // Use left and right bumpers to control intake
-
         // Left bumper
         if(xController.getBumperPressed(Hand.kLeft)) {
             controller.setIntakeSpeed(INTAKE_SPEED);
@@ -128,7 +142,6 @@ public class ChallengeFour {
         if(xController.getBumperReleased(Hand.kLeft)) {
             controller.setIntakeSpeed(ZERO);
         }
-
         // Right bumper (reverse intake)
         if(xController.getBumperPressed(Hand.kRight)) {
             controller.setIntakeSpeed(-1 * INTAKE_SPEED);
