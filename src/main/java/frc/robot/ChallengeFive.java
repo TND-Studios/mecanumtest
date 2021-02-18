@@ -23,10 +23,14 @@ public class ChallengeFive {
     private static double ZERO = 0;
    private static double small = 0.5;//move the variable somewhere else
     //put variables here
-
+    private static double negativeIntake = -0.4;
+    private static double positiveIntake = 0.4;
+    private static double highFlywheelSpeed = 0.7;
+    private static double flywheelSpeed = 0;
+    
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
-            
+    
     /* 
         Instructions on how to get data from the robot:
             controller.getAngleFacing() returns a double indicating which angle (in degrees) the robot is facing
@@ -117,21 +121,34 @@ public class ChallengeFive {
 
         //this if statement does not descirbe what the controls will be, I have this as an example to use as reference.
 
-        if(xController.getX(Hand.kRight) > 0)
+        
+
+
+         if(xController.getXButtonPressed())
+         {
+             //will activate inverse. I need the other part of the code done first however.
+         }
+         if(xController.getYButtonPressed())
+         {
+           flywheelSpeed = highFlywheelSpeed;
+         }
+         
+
+        if(xController.getY(Hand.kRight) > 0)
         {
-            controller.setIntakeSpeed(-0.4);
+            controller.setIntakeSpeed(negativeIntake);
         }
         else
         {
-              controller.setIntakeSpeed(0);
+              controller.setIntakeSpeed(ZERO);
         }
-        if(xController.getX(Hand.kRight) < 0)
+        if(xController.getY(Hand.kRight) < 0)
         {
-            controller.setIntakeSpeed(0.4);
+            controller.setIntakeSpeed(positiveIntake);
         }
         else
         {
-              controller.setIntakeSpeed(0);
+              controller.setIntakeSpeed(ZERO);
         }
 
         
