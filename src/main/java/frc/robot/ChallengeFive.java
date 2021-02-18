@@ -131,46 +131,51 @@ public class ChallengeFive {
          if(xController.getYButtonPressed())
          {
            flywheelSpeed = highFlywheelSpeed;
+           //sets the flywheel speed to the "high value"
          }
          
 
         if(xController.getY(Hand.kRight) > 0)
         {
-            controller.setIntakeSpeed(negativeIntake);
+            controller.setIntakeSpeed(positiveIntake);
+            //Intake goes up. I'll fix this if I reversed the controls by accident.
         }
         else
         {
               controller.setIntakeSpeed(ZERO);
+              //to set value to zero when no one is touching joystick.
         }
         if(xController.getY(Hand.kRight) < 0)
         {
-            controller.setIntakeSpeed(positiveIntake);
+            controller.setIntakeSpeed(negativeIntake);
+             //Intake goes down. I'll fix this if I reversed the controls by accident.
         }
         else
         {
               controller.setIntakeSpeed(ZERO);
+              //to set value to zero when no one is touching joystick.
         }
 
-        
-if(xController.getY(Hand.kLeft) > 0)
-{
+ //USE ALL OF THIS AS A REFERENCE FOR THE LEFT JOYSTICK       
+//if(xController.getY(Hand.kLeft) > 0)
+//{
    // controller.setDriveSpeed(0.9, 0.9);
    //left joystick moves UP.
    //Hand.kRight is RIGHT Joystick
-}
-if(xController.getY(Hand.kLeft) < 0)
-{
+//}
+//if(xController.getY(Hand.kLeft) < 0)
+//{
     
     //left joystick moves down
-}
-if(xController.getX(Hand.kLeft) > 0)
-{
+//}
+//if(xController.getX(Hand.kLeft) > 0)
+//{
 //left joystick moves right
-}
-if(xController.getX(Hand.kLeft) < 0)
-{
+//}
+//if(xController.getX(Hand.kLeft) < 0)
+//{
 //left joystick moves left
-}
+//}
 
     }
  
