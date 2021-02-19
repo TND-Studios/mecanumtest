@@ -78,10 +78,10 @@ public class Wheels {
 
     public void diffDrive(double speed1, double speed2, DriveType dType) {
         switch(dType) {
-            case ARCADE_DRIVE:
+            case ARCADE:
                 wheels.arcadeDrive(speed1 * 0.8, speed2 * 0.8); // speed scaling may need to be adjusted as we can't test in person right now
                 break;
-            case TANK_DRIVE:
+            case TANK:
                 wheels.tankDrive(speed1 * 0.9, speed2 * 0.9);
                 break;
         }
