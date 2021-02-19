@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Wheels.DriveType;
 // import edu.wpi.first.wpilibj.SPI;
 // import com.kauailabs.navx.frc.AHRS;
 // import edu.wpi.first.wpilibj.DriverStation;
@@ -25,10 +26,13 @@ public class ChallengeFour {
 
     //put variables here
     private double shooterSpeed = 0.5; // incremented as we move further back from target
+    private DriveType driveType;
 
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
-    private double encoderDistance = controller.getDistanceTravelled("fL"); // change encoder position accordingly
+    private double leftStickX;
+    private double leftStickY ;
+    private double encoderDistance; 
 
     /* 
         Instructions on how to get data from the robot:
@@ -51,9 +55,6 @@ public class ChallengeFour {
 
     //this is the xbox controller which will be plugged into the drive laptop to control the robot
     private XboxController xController;
-    private double leftStickX = xController.getX(Hand.kLeft);
-    private double leftStickY = xController.getY(Hand.kLeft);
-    private double rightStickY = xController.getY(Hand.kRight);
 
     /* 
         The documentation for the xbox controller can be found here: https://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/XboxController.html
@@ -69,6 +70,7 @@ public class ChallengeFour {
     public ChallengeFour(Controller cIn) {
         controller = cIn; 
         xController = controller.xcontroller;
+        driveType = DriveType.ARCADE;
     }
 
 
@@ -98,11 +100,17 @@ public class ChallengeFour {
             Explain your controls here, so the driver knows what to do. 
                 > Drive the robot using the left and right joysticks to control the speed of their respective wheels OR left joystick only
                 > Rev up the shooter (big wheel) using left trigger and feed (blue wheel) using right trigger
-                > Increase/decrease shooter speed using right joystick
+                > Increase/decrease shooter speed using X/Y buttons
                 > Start intake using left bumper, reverse intake using right bumper
                 > Reset encoder using A button
+                > Toggle between tank/arcade drive using B button
         
         */
+
+        // Get joystick directions
+        leftStickX = xController.getX(Hand.kLeft);
+        leftStickY = xController.getY(Hand.kLeft);
+        encoderDistance = controller.getDistanceTravelled("fL"); // change encoder position accordingly
 
         // SmartDashboard values
         SmartDashboard.putNumber("Distance travelled from start (ft)", encoderDistance);
@@ -113,20 +121,27 @@ public class ChallengeFour {
             controller.resetDistance();
         }
 
-        // Tank drive (move each set of wheels forward/backward using left/right joysticks)
-        // controller.setDriveSpeed(leftStickY, rightStickY); [uncomment to use]
-        
-        // Arcade drive (move all wheels using left joystick)
-        // -- rotate left/right when leftStick moved left/right, go forward/backward when leftStick moved up/down
-        // -- add rotation to translation for both sets of wheels
-        // -- if leftStick is moved anywhere to left, right wheels should move faster than left wheels
-        // -- if leftStick is moved anywhere to right, left wheels should move faster than right wheels
-        // -- decrease leftStickX so that speed does not go out of bounds?
-        controller.setDriveSpeed(leftStickY + leftStickX * 0.2, leftStickY - leftStickX * 0.2);
+        // Toggle between arcade/tank drive using B button
+        if(xController.getBButtonPressed()) {
+            if(driveType == DriveType.ARCADE)
+                driveType = DriveType.TANK;
+            else
+                driveType = DriveType.ARCADE;
+        }
+        switch(driveType) {
+            case ARCADE:
+                controller.diffDrive(xController.getY(Hand.kLeft), xController.getX(Hand.kLeft), driveType);
+                break;
+            case TANK:
+                controller.diffDrive(xController.getY(Hand.kLeft), xController.getY(Hand.kRight), driveType);
+        }
 
-        // Use right joystick to increase/decrease launcher speed
-        if(rightStickY != 0) {
-            shooterSpeed += rightStickY;
+        // Use X/Y buttons to increase/decrease launcher speed
+        if(xController.getXButtonPressed()) {
+            shooterSpeed += 0.1;
+        }
+        if(xController.getYButtonPressed()) {
+            shooterSpeed -= 0.1;
         }
 
         // Use triggers to control shooter
