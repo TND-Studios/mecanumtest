@@ -76,7 +76,7 @@ public class Controller{
         hookUp = false;
 
         cOne = new ChallengeOne(this);
-        cTwo = new ChallengeTwo(this);
+        cTwo = new ChallengeTwo(this, 1);
         cThree = new ChallengeThree(this);
         cFour = new ChallengeFour(this);
         cFive = new ChallengeFive(this);
