@@ -19,14 +19,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ChallengeFive {
 
     //put constants here
-    private static double FEEDER_SPEED = -0.4;
+    
     private static double ZERO = 0;
-   private static double small = 0.5;//move the variable somewhere else
-    //put variables here
 
+    //put variables here
+    private static double negativeIntake = -0.4;
+    private static double positiveIntake = 0.4;
+    private static double highFlywheelSpeed = 0.7;
+    private static double flywheelSpeed = 0.5;
+    
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
-            
+    
     /* 
         Instructions on how to get data from the robot:
             controller.getAngleFacing() returns a double indicating which angle (in degrees) the robot is facing
@@ -87,73 +91,47 @@ public class ChallengeFive {
     //this is called every 20 milliseconds during teleop (manually controlled by human with xboxcontroller)
     public void UpdateTeleop() {
 
-        /* 
-        
-            Explain your controls here, so the driver knows what to do. 
-                > Drive the robot using the left and right joysticks to control the speed of their respective wheels. 
-        
-        
-        */
-                                                                                                                                                                                                                                                                                                                                controller.setFeederSpeed(0.85);//think this is how we set values....
-        // This is a very basic way of driving using two joysticks. Think about other ways the robot can be driven. Which would be the easiest and/or most efficient for the driver?
-        controller.setDriveSpeed(xController.getY(Hand.kLeft), xController.getY(Hand.kRight));
-        //do this if it suits your code y'all! Dillon.
-        
-       if(xController.getBumperPressed(null))
-       {
-           //intake.drive(-0.4);
-       }
-       else
-       {
-           //intake.drive(0);
-    }
-//this if statement does not descirbe what the controls will be, I have this as an example to use as reference.
-        if(xController.getBButtonPressed())
-        {
-            System.out.println("HI");
+       
            
-            controller.setShooterSpeed(small);
-        }
-
-        //this if statement does not descirbe what the controls will be, I have this as an example to use as reference.
-
-        if(xController.getX(Hand.kRight) > 0)
-        {
-            controller.setIntakeSpeed(-0.4);
-        }
-        else
-        {
-              controller.setIntakeSpeed(0);
-        }
-        if(xController.getX(Hand.kRight) < 0)
-        {
-            controller.setIntakeSpeed(0.4);
-        }
-        else
-        {
-              controller.setIntakeSpeed(0);
-        }
-
-        
-if(xController.getY(Hand.kLeft) > 0)
-{
-   // controller.setDriveSpeed(0.9, 0.9);
-   //left joystick moves UP.
-   //Hand.kRight is RIGHT Joystick
-}
-if(xController.getY(Hand.kLeft) < 0)
-{
     
-    //left joystick moves down
-}
-if(xController.getX(Hand.kLeft) > 0)
-{
-//left joystick moves right
-}
-if(xController.getX(Hand.kLeft) < 0)
-{
-//left joystick moves left
-}
+//this if statement does not descirbe what the controls will be, I have this as an example to use as reference.
+       
+
+
+    
+
+         if(xController.getXButtonPressed())
+         {
+             //will activate inverse. I need the other part of the code done first however.
+         }
+         if(xController.getYButtonPressed())
+         {
+           flywheelSpeed = highFlywheelSpeed;
+           //sets the flywheel speed to the "high value"
+         }
+         
+
+        if(xController.getY(Hand.kRight) > 0)
+        {
+            controller.setIntakeSpeed(positiveIntake);
+            //Intake goes up. I'll fix this if I reversed the controls by accident.
+        }
+        else
+        {
+              controller.setIntakeSpeed(ZERO);
+              //to set value to zero when no one is touching joystick.
+        }
+        if(xController.getY(Hand.kRight) < 0)
+        {
+            controller.setIntakeSpeed(negativeIntake);
+             //Intake goes down. I'll fix this if I reversed the controls by accident.
+        }
+        else
+        {
+              controller.setIntakeSpeed(ZERO);
+              //to set value to zero when no one is touching joystick.
+        }
+
 
     }
  
