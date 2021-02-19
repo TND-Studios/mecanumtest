@@ -114,26 +114,26 @@ public class ChallengeFive {
            //sets the flywheel speed to the "high value"
          }
          
-         if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0){
-            if(xController.getY(Hand.kLeft) > 0 && xController.getY(Hand.kLeft) > Math.abs(xController.getX(Hand.kleft)))
+         if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0){ // if the joystick is not idle
+            if(xController.getY(Hand.kLeft) > 0 && xController.getY(Hand.kLeft) > Math.abs(xController.getX(Hand.kleft))) 
             {
-                controller.setDriveSpeed(FULLPOWER, FULLPOWER);
+                controller.setDriveSpeed(FULLPOWER, FULLPOWER); // move up
             }
             if(xController.getY(Hand.kLeft) < 0 && Math.abs(xController.getX(Hand.kLeft))< Math.abs(xController.getY(Hand.kLeft)))
             {
-                controller.setDriveSpeed(FULLPOWER_neg, FULLPOWER_neg);
+                controller.setDriveSpeed(FULLPOWER_neg, FULLPOWER_neg);// move down
             }
             if(xController.getX(Hand.kLeft) < 0 && Math.abs(xController.getY(Hand.kLeft))< Math.abs(xController.getX(Hand.kLeft)))
             {
-                controller.setDriveSpeed(TURNPOWER, FULLPOWER);
+                controller.setDriveSpeed(TURNPOWER, FULLPOWER);// move left
             }
             if(xController.getX(Hand.kLeft) > 0 && Math.abs(xController.getY(Hand.kLeft))< Math.abs(xController.getX(Hand.kLeft)))
             {
-                controller.setDriveSpeed(FULLPOWER, TURNPOWER);
+                controller.setDriveSpeed(FULLPOWER, TURNPOWER); //move right
             }
         }
         else{
-            controller.setDriveSpeed(ZERO, ZERO);
+            controller.setDriveSpeed(ZERO, ZERO); // stop motors/idle
         }
          
 
