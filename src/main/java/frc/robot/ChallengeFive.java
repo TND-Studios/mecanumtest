@@ -21,6 +21,10 @@ public class ChallengeFive {
     //put constants here
     
     private static double ZERO = 0;
+    private static final double FULLPOWER = .9;
+    private static final double TURNPOWER = .7;
+    private static final double FULLPOWER_neg = -.9;
+    private static final double TURNPOWER_neg = -.7;
 
     //put variables here
     private static double negativeIntake = -0.4;
@@ -110,27 +114,28 @@ public class ChallengeFive {
            //sets the flywheel speed to the "high value"
          }
          
-
-        if(xController.getY(Hand.kRight) > 0)
-        {
-            controller.setIntakeSpeed(positiveIntake);
-            //Intake goes up. I'll fix this if I reversed the controls by accident.
+         if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0){
+            if(xController.getY(Hand.kLeft) > 0 && xController.getY(Hand.kLeft) > Math.abs(xController.getX(Hand.kleft)))
+            {
+                controller.setDriveSpeed(FULLPOWER, FULLPOWER);
+            }
+            if(xController.getY(Hand.kLeft) < 0 && Math.abs(xController.getX(Hand.kLeft))< Math.abs(xController.getY(Hand.kLeft)))
+            {
+                controller.setDriveSpeed(FULLPOWER_neg, FULLPOWER_neg);
+            }
+            if(xController.getX(Hand.kLeft) < 0 && Math.abs(xController.getY(Hand.kLeft))< Math.abs(xController.getX(Hand.kLeft)))
+            {
+                controller.setDriveSpeed(TURNPOWER, FULLPOWER);
+            }
+            if(xController.getX(Hand.kLeft) > 0 && Math.abs(xController.getY(Hand.kLeft))< Math.abs(xController.getX(Hand.kLeft)))
+            {
+                controller.setDriveSpeed(FULLPOWER, TURNPOWER);
+            }
         }
-        else
-        {
-              controller.setIntakeSpeed(ZERO);
-              //to set value to zero when no one is touching joystick.
+        else{
+            controller.setDriveSpeed(ZERO, ZERO);
         }
-        if(xController.getY(Hand.kRight) < 0)
-        {
-            controller.setIntakeSpeed(negativeIntake);
-             //Intake goes down. I'll fix this if I reversed the controls by accident.
-        }
-        else
-        {
-              controller.setIntakeSpeed(ZERO);
-              //to set value to zero when no one is touching joystick.
-        }
+         
 
 
     }
