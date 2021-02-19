@@ -24,10 +24,11 @@ public class ChallengeFour {
     private static double ZERO = 0;
 
     //put variables here
-    private double shooterSpeed = 0.5; // incremented when we move further back from target
+    private double shooterSpeed = 0.5; // incremented as we move further back from target
 
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
+    private double encoderDistance = controller.getDistanceTravelled("fL"); // change encoder position accordingly
 
     /* 
         Instructions on how to get data from the robot:
@@ -99,8 +100,18 @@ public class ChallengeFour {
                 > Rev up the shooter (big wheel) using left trigger and feed (blue wheel) using right trigger
                 > Increase/decrease shooter speed using right joystick
                 > Start intake using left bumper, reverse intake using right bumper
+                > Reset encoder using A button
         
         */
+
+        // SmartDashboard values
+        SmartDashboard.putNumber("Distance travelled from start (ft)", encoderDistance);
+        SmartDashboard.putNumber("Shooter speed", shooterSpeed); 
+
+        // Reset distance recorded by encoder using A button
+        if (xController.getAButtonPressed()) {
+            controller.resetDistance();
+        }
 
         // Tank drive (move each set of wheels forward/backward using left/right joysticks)
         // controller.setDriveSpeed(leftStickY, rightStickY); [uncomment to use]

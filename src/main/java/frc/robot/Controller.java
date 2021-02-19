@@ -241,6 +241,10 @@ public class Controller{
         return wheels.getRotations(pos) * 2 * 3.1415926535 * 3  * 1 / 12;
     }
 
+    public void resetDistance() {
+        wheels.resetRotations();
+    }
+
     public void setDriveSpeed(double l, double r) {
         wheels.drive(l, r);
     }
