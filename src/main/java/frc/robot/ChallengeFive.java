@@ -115,7 +115,7 @@ public class ChallengeFive {
          }
          
          if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0){ // if the joystick is not idle
-            if(xController.getY(Hand.kLeft) > 0 && xController.getY(Hand.kLeft) > Math.abs(xController.getX(Hand.kleft))) 
+            if(xController.getY(Hand.kLeft) > 0 && xController.getY(Hand.kLeft) > Math.abs(xController.getX(Hand.kLeft))) 
             {
                 controller.setDriveSpeed(FULLPOWER, FULLPOWER); // move up
             }
@@ -136,6 +136,19 @@ public class ChallengeFive {
             controller.setDriveSpeed(ZERO, ZERO); // stop motors/idle
         }
          
+        if(xController.getY(Hand.kRight) == 0)
+        {
+            if(xController.getY(Hand.kRight) > 0)
+            {
+                controller.setIntakeSpeed(negativeIntake);
+                //intake moves up
+            }
+            if(xController.getY(Hand.kRight) < 0)
+            {
+                 controller.setIntakeSpeed(positiveIntake);
+                 //intake moves down
+            }
+        }
 
 
     }
