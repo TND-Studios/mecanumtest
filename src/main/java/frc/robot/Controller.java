@@ -256,6 +256,10 @@ public class Controller{
     public void setFeederSpeed(double v) {
         shooter.fire(v);
     }
+
+    public void diffDrive(double s1, double s2, Wheels.DriveType driveType) {
+        wheels.diffDrive(s1, s2, driveType);
+    }
    
 
 }
