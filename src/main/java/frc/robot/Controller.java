@@ -261,5 +261,7 @@ public class Controller{
         wheels.diffDrive(s1, s2, driveType);
     }
    
-
+    public void resetDistance() {
+        wheels.resetRotations();
+    }
 }
