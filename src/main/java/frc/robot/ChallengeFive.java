@@ -31,7 +31,7 @@ public class ChallengeFive {
     private static double positiveIntake = 0.4;
     private static double highFlywheelSpeed = 0.7;
     private static double flywheelSpeed = 0.5;
-    private static boolean inverse = false;
+    
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
     
@@ -104,27 +104,17 @@ public class ChallengeFive {
 
     
 
-         while(xController.getXButtonPressed() == true)
+         if(xController.getXButtonPressed())
          {
-             inverse = true;
-             //will activate inverse as long as someone HOLDS down the x button. 
+             //will activate inverse. I need the other part of the code done first however.
          }
-        while(xController.getXButtonPressed() == false)
-        {
-         inverse = false;
-            //when no one is pressing the x button, inverse reverts back to false
-        }        
-
-
-         if(xController.getYButtonPressed() == true)
+         if(xController.getYButtonPressed())
          {
            flywheelSpeed = highFlywheelSpeed;
-           //sets the flywheel speed to the "high value" Just one tap should work
+           //sets the flywheel speed to the "high value"
          }
-        
-         while(inverse == false){
-         if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0)
-         { // if the joystick is not idle
+         
+         if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0){ // if the joystick is not idle
             if(xController.getY(Hand.kLeft) > 0 && xController.getY(Hand.kLeft) > Math.abs(xController.getX(Hand.kLeft))) 
             {
                 controller.setDriveSpeed(FULLPOWER, FULLPOWER); // move up
@@ -145,32 +135,7 @@ public class ChallengeFive {
         else{
             controller.setDriveSpeed(ZERO, ZERO); // stop motors/idle
         }
-    }
-    while(inverse == true)
-    {  //These are inverse controls
-        if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0)
-         { // if the joystick is not idle
-            if(xController.getY(Hand.kLeft) < 0 && xController.getY(Hand.kLeft) < Math.abs(xController.getX(Hand.kLeft))) 
-            {
-                controller.setDriveSpeed(FULLPOWER, FULLPOWER); // move down
-            }
-            if(xController.getY(Hand.kLeft) > 0 && Math.abs(xController.getX(Hand.kLeft))> Math.abs(xController.getY(Hand.kLeft)))
-            {
-                controller.setDriveSpeed(FULLPOWER_neg, FULLPOWER_neg);// move up
-            }
-            if(xController.getX(Hand.kLeft) > 0 && Math.abs(xController.getY(Hand.kLeft)) > Math.abs(xController.getX(Hand.kLeft)))
-            {
-                controller.setDriveSpeed(TURNPOWER, FULLPOWER);// move right
-            }
-            if(xController.getX(Hand.kLeft) < 0 && Math.abs(xController.getY(Hand.kLeft)) < Math.abs(xController.getX(Hand.kLeft)))
-            {
-                controller.setDriveSpeed(FULLPOWER, TURNPOWER); //move left
-            }
-        }
-        else{
-            controller.setDriveSpeed(ZERO, ZERO); // stop motors/idle
-        } 
-    }
+         
         if(xController.getY(Hand.kRight) == 0)
         {
             if(xController.getY(Hand.kRight) > 0)
