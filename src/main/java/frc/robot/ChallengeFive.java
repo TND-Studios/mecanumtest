@@ -31,8 +31,12 @@ public class ChallengeFive {
     private static double negativeIntake = -0.4;
     private static double positiveIntake = 0.4;
     private static double highFlywheelSpeed = 0.7;
+    private static double lowFlywheelSpeed = 0.3;
     private static double flywheelSpeed = 0.5;
     private static boolean inverse = false;
+    private static double angle;
+    private static double ultraSonic;
+    private static double distance;
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;
     
@@ -64,7 +68,11 @@ public class ChallengeFive {
      
      */
     
-    
+    //angle = controller.getAngleFacing();
+    //ultraSonic = controller.getUltraSonicReading();
+    //distance = controller.getDistanceTravelled("fl");
+
+    //System.out.println("angle: " + angle + "ultraSonic: " + ultraSonic + "distance: " + distance)
     
     // Methods
     
@@ -101,7 +109,9 @@ public class ChallengeFive {
         
         //this if statement does not descirbe what the controls will be, I have this as an example to use as reference.
         
-        
+          angle = controller.getAngleFacing();
+    ultraSonic = controller.getUltraSonicReading();
+    distance = controller.getDistanceTravelled("fl");
         
         
         
@@ -115,7 +125,10 @@ public class ChallengeFive {
             inverse = false;
             //when no one is pressing the x button, inverse reverts back to false
         }
-        
+        if(xController.getBButtonPressed() == true)
+        {
+           flywheelSpeed = lowFlywheelSpeed;
+        }
         
         if(xController.getYButtonPressed() == true)
         {
@@ -123,6 +136,12 @@ public class ChallengeFive {
             //sets the flywheel speed to the "high value" Just one tap should work
         }
         
+        if(xController.getAButtonPressed() == true)
+        {
+            controller.setShooterSpeed(flywheelSpeed);
+        }
+
+
         if(inverse == false){
             if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0)
             { // if the joystick is not idle
