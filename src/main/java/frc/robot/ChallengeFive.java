@@ -105,12 +105,12 @@ public class ChallengeFive {
         
         
         
-        while(xController.getXButtonPressed() == true)
+        if(xController.getXButtonPressed() == true)
         {
             inverse = true;
             //will activate inverse as long as someone HOLDS down the x button.
         }
-        while(xController.getXButtonPressed() == false)
+        if(xController.getXButtonPressed() == false)
         {
             inverse = false;
             //when no one is pressing the x button, inverse reverts back to false
@@ -123,7 +123,7 @@ public class ChallengeFive {
             //sets the flywheel speed to the "high value" Just one tap should work
         }
         
-        while(inverse == false){
+        if(inverse == false){
             if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0)
             { // if the joystick is not idle
                 if(xController.getY(Hand.kLeft) > 0 && xController.getY(Hand.kLeft) > Math.abs(xController.getX(Hand.kLeft)))
@@ -147,7 +147,7 @@ public class ChallengeFive {
                 controller.setDriveSpeed(ZERO, ZERO); // stop motors/idle
             }
         }
-        while(inverse == true)
+        if(inverse == true)
         {  //These are inverse controls
             if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0)
             { // if the joystick is not idle
