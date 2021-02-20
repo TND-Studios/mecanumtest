@@ -32,6 +32,10 @@ public class ChallengeFive {
     private static double highFlywheelSpeed = 0.7;
     private static double flywheelSpeed = 0.5;
     private static boolean inverse = false;
+    private static double angle;
+    private static double ultrasonic;
+    private static double distance;
+    
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
     
@@ -95,11 +99,11 @@ public class ChallengeFive {
     //this is called every 20 milliseconds during teleop (manually controlled by human with xboxcontroller)
     public void UpdateTeleop() {
 
-       
-           
-    
+         angle = controller.getAngleFacing();
+         ultrasonic = controller.getUltraSonicReading();
+         distance = controller.getDistanceTravelled("fL");
 //this if statement does not descirbe what the controls will be, I have this as an example to use as reference.
-       
+       System.out.println("angle:" + angle + "ultrasonic:" + ultrasonic + "distance" + distance);
 
 
     
@@ -183,7 +187,7 @@ public class ChallengeFive {
                  controller.setIntakeSpeed(positiveIntake);
                  //intake moves down
             }
-        }
+        }                           
 //a
 
     }
