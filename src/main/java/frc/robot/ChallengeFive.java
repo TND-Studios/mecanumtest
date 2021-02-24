@@ -112,7 +112,7 @@ public class ChallengeFive {
           angle = controller.getAngleFacing();
     ultraSonic = controller.getUltraSonicReading();
     distance = controller.getDistanceTravelled("fl");
-        
+        System.out.println("angle:" + angle + "ultraSonic: " + ultraSonic + "distance: " + distance);
         
         
         if(xController.getXButtonPressed() == true)
@@ -140,7 +140,7 @@ public class ChallengeFive {
         {
             controller.setShooterSpeed(flywheelSpeed);
         }
-
+//controller.setDriveSpeed(xController.getY(Hand.kLeft), xController.getY(Hand.kRight));
 
         if(inverse == false){
             if(xController.getY(Hand.kLeft) != 0 || xController.getX(Hand.kLeft) != 0)
