@@ -256,5 +256,9 @@ public class Controller{
     public void setFeederSpeed(double v) {
         shooter.fire(v);
     }
+    
+    public void calibrate() {
+        ahrs.calibrate();
+    }
 
 }
