@@ -29,6 +29,9 @@ public class Test {
         SmartDashboard.putNumber("gyro velocity X", controller.ahrs.getVelocityX());
         SmartDashboard.putNumber("gyro velocity Y", controller.ahrs.getVelocityY());
         SmartDashboard.putNumber("gyro velocity Z", controller.ahrs.getVelocityZ());
+        SmartDashboard.putNumber("fused heading", controller.ahrs.getFusedHeading());
+        SmartDashboard.putNumber("gyro heading", controller.ahrs.getAngle());
+        SmartDashboard.putNumber("mag reading", controller.ahrs.getCompassHeading());
         // Use X/Y buttons to increase/decrease launcher speed
         if(xController.getXButtonPressed()) {
             shooterSpeed += 0.1;
