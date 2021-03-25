@@ -31,7 +31,7 @@ public class Controller{
 
     private Shooter shooter;
 
-    private AHRS ahrs;
+    public AHRS ahrs;
     private AnalogInput m_ultrasonic;
 
     private Boolean hookUp; 
