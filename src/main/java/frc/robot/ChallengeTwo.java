@@ -190,7 +190,7 @@ public class ChallengeTwo {
 
         // This is a very basic way of driving using two joysticks. Think about other ways the robot can be driven. Which would be the easiest and/or most efficient for the driver?
         controller.setDriveSpeed(xController.getY(Hand.kLeft), xController.getY(Hand.kRight));
-
+        if (xController.getBumper(Hand.kLeft)) { controller.calibrate(); }
 
     }
 
