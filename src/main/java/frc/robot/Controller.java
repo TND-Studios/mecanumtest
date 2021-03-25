@@ -41,7 +41,7 @@ public class Controller{
 
     private DigitalInput dioOne, dioTwo;
 
-
+    private Test t;
     private ChallengeOne cOne;
     private ChallengeTwo cTwo;
     private ChallengeThree cThree;
@@ -74,7 +74,7 @@ public class Controller{
         hook = new HookExtension(hookPort, hookPortTwo);
 
         hookUp = false;
-
+        t = new Test(this);
         cOne = new ChallengeOne(this);
         cTwo = new ChallengeTwo(this);
         cThree = new ChallengeThree(this);
@@ -100,7 +100,7 @@ public class Controller{
         //logic code below
 
         switch(challengeNumber) {
-            case -1: break;
+            case -1: t.UpdateTeleop(); break;
             case 1: cOne.UpdateTeleop(); break;
             case 2: cTwo.UpdateTeleop();  break;
             case 3: cThree.UpdateTeleop();  break;
