@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.first.wpilibj.XboxController;
 
 //uncomment ones you need
@@ -21,8 +24,20 @@ public class ChallengeOne {
     //put constants here
     private static double FEEDER_SPEED = -0.4;
     private static double ZERO = 0;
+    private static double INTAKE_SPEED = -0.85;
+
+    private static final double DISTANCE_PIVOT_TO_WHEEL = 22.5 / 2;
+
+    private static final double MAX_DRIVE_SPEED = 0.8;
+    private static final double OUTER_TURN_DRIVE_SPEED = 0.6; 
+
+    private static final double[] STRAIGHT_INTAKE_OFF = { MAX_DRIVE_SPEED, MAX_DRIVE_SPEED, 0};
+    private static final double[] STRAIGHT_INTAKE_ON = { MAX_DRIVE_SPEED, MAX_DRIVE_SPEED, INTAKE_SPEED};
+
 
     //put variables here
+
+
 
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
     private Controller controller;   
@@ -55,6 +70,11 @@ public class ChallengeOne {
     
     */
 
+    private ArrayList<ArrayList<AutonomousSegment>> paths = new ArrayList<ArrayList<AutonomousSegment>>();
+
+    private int currentSegment = 1;
+    private int path; 
+
 
 
     // Methods
@@ -63,6 +83,17 @@ public class ChallengeOne {
     public ChallengeOne(Controller cIn) {
         controller = cIn; 
         xController = controller.xcontroller;
+
+        //determine which path we are on 
+        if (1 == Math.sin(0)) {
+            path = 1;
+        } else if (1 == Math.sin(0)) {
+            path = 2;
+        } else {
+            path = 3;
+        }
+
+        //add segments to paths here
     }
 
 
@@ -80,7 +111,28 @@ public class ChallengeOne {
 
     //this is called every 20 milliseconds during autonomous
     public void UpdateAutonomous() {
+        // Display useful information
+        SmartDashboard.putNumber("Current Path", path);
+        SmartDashboard.putNumber("Current Segment", currentSegment);
+        SmartDashboard.putNumber("Total distance travelled (in)", getDistanceTravelled());
+        SmartDashboard.putNumber("Angle Facing Real (deg)", controller.getAngleFacing());
+        SmartDashboard.putNumber("Angle Facing Adjusted (deg)", getAngleFacing());
 
+        if (currentSegment == paths.get(path - 1).size()) { 
+            controller.setDriveSpeed(0, 0);
+            controller.setIntakeSpeed(0);
+            return;
+        }
+        
+        if (paths.get(path - 1).get(currentSegment - 1).IsSegmentComplete(getDistanceTravelled(), getAngleFacing())) {
+            currentSegment++;
+            if (currentSegment == paths.get(path - 1).size()) { 
+                controller.setDriveSpeed(0, 0);
+                controller.setIntakeSpeed(0);
+                return;
+            }
+            paths.get(path - 1).get(currentSegment - 1).SetSpeeds(controller);
+        }
     }
 
 
@@ -100,6 +152,56 @@ public class ChallengeOne {
 
     }
 
+    //radius is of center; this function accounts for distance to wheel
+    //direction use 1 or -1 
+    //rotation: true = cw; false = ccw;
 
+    private AutonomousSegment createCircularAutonomousSegment(int radius, int angle, int direction, boolean rotation, double intakeSpeed, AutonomousSegment prev) {
+
+        boolean distanceGreater = true;
+        if (direction == -1) distanceGreater = false;
+
+        
+
+        if ((rotation && direction == 1) || (!rotation && direction == -1)) {
+            //cw forward = ccw backwards = left faster
+            return new AutonomousSegment(radius * Math.abs(angle) * direction, 
+                                        angle, 
+                                        prev,
+                                        new double[] {OUTER_TURN_DRIVE_SPEED * direction, GetInnerTurnSpeed(radius) * direction, intakeSpeed}, 
+                                        distanceGreater,
+                                        (distanceGreater == rotation)); 
+        } else {
+            return new AutonomousSegment(radius * Math.abs(angle) * direction, 
+                                        angle, 
+                                        prev,
+                                        new double[] {GetInnerTurnSpeed(radius) * direction, 
+                                        OUTER_TURN_DRIVE_SPEED*direction, intakeSpeed}, 
+                                        distanceGreater,
+                                        (distanceGreater == rotation)); 
+        }
+        
+    }
+
+    private AutonomousSegment createStraightAutonomousSegment(int length, int direction, double intakeSpeed, AutonomousSegment prev) {
+        boolean distanceGreater = true;
+        if (direction == -1) distanceGreater = false;
+
+        return new AutonomousSegment(length, 0, prev, new double[] { MAX_DRIVE_SPEED * direction, MAX_DRIVE_SPEED * direction, intakeSpeed}, distanceGreater, false);
+    }
+
+    private double GetInnerTurnSpeed(double CIRCLE_RADIUS) {
+
+        return (CIRCLE_RADIUS - DISTANCE_PIVOT_TO_WHEEL) / (CIRCLE_RADIUS + DISTANCE_PIVOT_TO_WHEEL) * OUTER_TURN_DRIVE_SPEED;
+    }
+    
+    private double getDistanceTravelled() {
+        return controller.getDistanceTravelled("fL") * 12.0;
+    }
+
+    //cw is positive 
+    private double getAngleFacing() {
+        return Math.toRadians(controller.getAngleFacing());
+    }
 
 }
