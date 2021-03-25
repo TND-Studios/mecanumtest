@@ -1,10 +1,10 @@
 package frc.robot;
 
 public class AutonomousSegment {
-    public double length;
-    public double angleChange; //radians
-    public double totalLength; 
-    public double totalAngleChange;
+    public double length = 0;
+    public double angleChange = 0; //radians
+    public double totalLength = 0; 
+    public double totalAngleChange = 0;
     public double[] speeds; 
     // left, right, intake
 
@@ -33,7 +33,12 @@ public class AutonomousSegment {
         if (speeds[0] == speeds[1]) ignoreAngle = true;
     }
 
-
+    public AutonomousSegment(boolean fake) {
+        length = 0;
+        angleChange = 0;
+        totalLength = 0; 
+        totalAngleChange = 0;
+    }
 
 
     public void SetSpeeds(Controller c) {

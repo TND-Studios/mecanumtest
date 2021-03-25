@@ -25,6 +25,7 @@ public class ChallengeOne {
     private static double FEEDER_SPEED = -0.4;
     private static double ZERO = 0;
     private static double INTAKE_SPEED = -0.85;
+    private static double COMPASS_OFFSET = 0; 
 
     private static final double DISTANCE_PIVOT_TO_WHEEL = 22.5 / 2;
 
@@ -34,6 +35,7 @@ public class ChallengeOne {
     private static final double[] STRAIGHT_INTAKE_OFF = { MAX_DRIVE_SPEED, MAX_DRIVE_SPEED, 0};
     private static final double[] STRAIGHT_INTAKE_ON = { MAX_DRIVE_SPEED, MAX_DRIVE_SPEED, INTAKE_SPEED};
 
+    private static final double TURN_RADIUS = 20.0;
 
     //put variables here
 
@@ -70,10 +72,10 @@ public class ChallengeOne {
     
     */
 
-    private ArrayList<ArrayList<AutonomousSegment>> paths = new ArrayList<ArrayList<AutonomousSegment>>();
+    private ArrayList<AutonomousSegment> path = new ArrayList<AutonomousSegment>();
 
     private int currentSegment = 1;
-    private int path; 
+    private String whichPath;
 
 
 
@@ -85,12 +87,43 @@ public class ChallengeOne {
         xController = controller.xcontroller;
 
         //determine which path we are on 
-        if (1 == Math.sin(0)) {
-            path = 1;
+        if (getCompassHeading() < 1 && getCompassHeading() > -1) {
+            whichPath = "RED A";
+            
+            double mx = 90 - TURN_RADIUS * Math.cos(1.33392);
+            double my = 90 - TURN_RADIUS * Math.sin(1.33392);
+            double ox = 150 + TURN_RADIUS * Math.cos(Math.PI + Math.atan(-2.41424));
+            double oy = 60 + TURN_RADIUS * Math.sin(Math.PI + Math.atan(-2.41424));
+
+            double px = 180 + TURN_RADIUS * Math.cos(Math.atan(-1.38743));
+            double py = 150 + TURN_RADIUS * Math.sin(Math.atan(-1.38743));
+
+            path.add(createStraightAutonomousSegment(60 - TURN_RADIUS * Math.cos(1.33392), 1, 0, new AutonomousSegment(false)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI / 2 - (Math.acos(2 * TURN_RADIUS / ( Math.sqrt(Math.pow(mx - ox, 2) + Math.pow((my - oy), 2))))) - Math.atan2(oy-my, ox-mx ), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / ( Math.sqrt(Math.pow(mx - ox, 2) + Math.pow((my - oy), 2))))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, angle, 1, false, INTAKE_SPEED, path.get(path.size() - 1)));
+        
         } else if (1 == Math.sin(0)) {
-            path = 2;
+            whichPath = "RED B";
+            if (getCompassHeading() < 1 && getCompassHeading() > -1) {
+                //add all the segments
+
+
+            }
+        } else if (1 == Math.sin(0)) {
+            whichPath = "BLUE A";
+            if (getCompassHeading() < 1 && getCompassHeading() > -1) {
+                //add all the segments
+
+
+            }
         } else {
-            path = 3;
+            whichPath = "BLUE B";
+            if (getCompassHeading() < 1 && getCompassHeading() > -1) {
+                //add all the segments
+
+
+            }
         }
 
         //add segments to paths here
@@ -112,26 +145,26 @@ public class ChallengeOne {
     //this is called every 20 milliseconds during autonomous
     public void UpdateAutonomous() {
         // Display useful information
-        SmartDashboard.putNumber("Current Path", path);
+        SmartDashboard.putString("Current Path", whichPath);
         SmartDashboard.putNumber("Current Segment", currentSegment);
         SmartDashboard.putNumber("Total distance travelled (in)", getDistanceTravelled());
         SmartDashboard.putNumber("Angle Facing Real (deg)", controller.getAngleFacing());
         SmartDashboard.putNumber("Angle Facing Adjusted (deg)", getAngleFacing());
 
-        if (currentSegment == paths.get(path - 1).size()) { 
+        if (currentSegment == path.size()) { 
             controller.setDriveSpeed(0, 0);
             controller.setIntakeSpeed(0);
             return;
         }
         
-        if (paths.get(path - 1).get(currentSegment - 1).IsSegmentComplete(getDistanceTravelled(), getAngleFacing())) {
+        if (path.get(currentSegment - 1).IsSegmentComplete(getDistanceTravelled(), getAngleFacing())) {
             currentSegment++;
-            if (currentSegment == paths.get(path - 1).size()) { 
+            if (currentSegment == path.size()) { 
                 controller.setDriveSpeed(0, 0);
                 controller.setIntakeSpeed(0);
                 return;
             }
-            paths.get(path - 1).get(currentSegment - 1).SetSpeeds(controller);
+            path.get(currentSegment - 1).SetSpeeds(controller);
         }
     }
 
@@ -149,6 +182,7 @@ public class ChallengeOne {
         // This is a very basic way of driving using two joysticks. Think about other ways the robot can be driven. Which would be the easiest and/or most efficient for the driver?
         controller.setDriveSpeed(xController.getY(Hand.kLeft), xController.getY(Hand.kRight));
 
+        if (xController.getBumper(Hand.kLeft)) { controller.calibrate(); }
 
     }
 
@@ -156,7 +190,7 @@ public class ChallengeOne {
     //direction use 1 or -1 
     //rotation: true = cw; false = ccw;
 
-    private AutonomousSegment createCircularAutonomousSegment(int radius, int angle, int direction, boolean rotation, double intakeSpeed, AutonomousSegment prev) {
+    private AutonomousSegment createCircularAutonomousSegment(double radius, double angle, int direction, boolean rotation, double intakeSpeed, AutonomousSegment prev) {
 
         boolean distanceGreater = true;
         if (direction == -1) distanceGreater = false;
@@ -183,7 +217,7 @@ public class ChallengeOne {
         
     }
 
-    private AutonomousSegment createStraightAutonomousSegment(int length, int direction, double intakeSpeed, AutonomousSegment prev) {
+    private AutonomousSegment createStraightAutonomousSegment(double length, int direction, double intakeSpeed, AutonomousSegment prev) {
         boolean distanceGreater = true;
         if (direction == -1) distanceGreater = false;
 
@@ -202,6 +236,10 @@ public class ChallengeOne {
     //cw is positive 
     private double getAngleFacing() {
         return Math.toRadians(controller.getAngleFacing());
+    }
+
+    private double getCompassHeading() { 
+        return controller.getCompassHeading() + COMPASS_OFFSET;
     }
 
 }

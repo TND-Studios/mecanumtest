@@ -256,5 +256,13 @@ public class Controller{
     public void setFeederSpeed(double v) {
         shooter.fire(v);
     }
+    
+    public double getCompassHeading() {
+        return ahrs.getCompassHeading();
+    }
+
+    public void calibrate() {
+        ahrs.calibrate();
+    }
 
 }
