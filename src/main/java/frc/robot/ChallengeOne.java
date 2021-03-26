@@ -203,20 +203,19 @@ public class ChallengeOne {
 
         if ((rotation && direction == 1) || (!rotation && direction == -1)) {
             //cw forward = ccw backwards = left faster
-            return new AutonomousSegment(radius * Math.abs(angle) * direction, 
+            return new AutonomousSegment((radius + DISTANCE_PIVOT_TO_WHEEL)* Math.abs(angle) * direction, 
                                         angle * -1, 
                                         prev,
                                         new double[] {OUTER_TURN_DRIVE_SPEED * direction, GetInnerTurnSpeed(radius) * direction, intakeSpeed}, 
                                         distanceGreater,
-                                        (distanceGreater == rotation)); 
+                                        !rotation); 
         } else {
-            return new AutonomousSegment(radius * Math.abs(angle) * direction, 
+            return new AutonomousSegment((radius - DISTANCE_PIVOT_TO_WHEEL) * Math.abs(angle) * direction, 
                                         angle, 
                                         prev,
-                                        new double[] {GetInnerTurnSpeed(radius) * direction, 
-                                        OUTER_TURN_DRIVE_SPEED*direction, intakeSpeed}, 
+                                        new double[] {GetInnerTurnSpeed(radius) * direction, OUTER_TURN_DRIVE_SPEED*direction, intakeSpeed}, 
                                         distanceGreater,
-                                        (distanceGreater == rotation)); 
+                                        !rotation); 
         }
         
     }
