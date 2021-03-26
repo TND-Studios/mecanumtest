@@ -90,19 +90,23 @@ public class ChallengeOne {
         if (getCompassHeading() < 1 && getCompassHeading() > -1) {
             whichPath = "RED A";
             
-            double mx = 90 - TURN_RADIUS * Math.cos(1.33392);
-            double my = 90 - TURN_RADIUS * Math.sin(1.33392);
+            double mx = 90 - TURN_RADIUS * Math.cos(Math.atan(4.15315));
+            double my = 90 - TURN_RADIUS * Math.sin(Math.atan(4.15315));
             double ox = 150 + TURN_RADIUS * Math.cos(Math.PI + Math.atan(-2.41424));
             double oy = 60 + TURN_RADIUS * Math.sin(Math.PI + Math.atan(-2.41424));
+            double distMO = Math.sqrt(Math.pow(mx-ox,2)+Math.pow((my-oy),2));
 
             double px = 180 + TURN_RADIUS * Math.cos(Math.atan(-1.38743));
             double py = 150 + TURN_RADIUS * Math.sin(Math.atan(-1.38743));
+            double distOP = Math.sqrt(Math.pow(ox-px,2)+Math.pow((oy-py),2));
 
-            path.add(createStraightAutonomousSegment(60 - TURN_RADIUS * Math.cos(1.33392), 1, 0, new AutonomousSegment(false)));
-            path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI / 2 - (Math.acos(2 * TURN_RADIUS / ( Math.sqrt(Math.pow(mx - ox, 2) + Math.pow((my - oy), 2))))) - Math.atan2(oy-my, ox-mx ), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
-            path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / ( Math.sqrt(Math.pow(mx - ox, 2) + Math.pow((my - oy), 2))))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
-            path.add(createCircularAutonomousSegment(TURN_RADIUS, angle, 1, false, INTAKE_SPEED, path.get(path.size() - 1)));
-        
+            path.add(createStraightAutonomousSegment(mx-30, 1, 0, new AutonomousSegment(false)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI / 2 - (Math.acos(2 * TURN_RADIUS / (distMO))) - Math.atan2(oy-my, ox-mx ), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / (distMO))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI - (  Math.acos(2 * TURN_RADIUS / (distMO)) + Math.acos(2 * TURN_RADIUS / (distOP)) + Math.atan2(oy-my, ox-mx) - Math.atan2(py-oy, px-ox) ), 1, false, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / (distOP))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI/2 - Math.acos(2 * TURN_RADIUS / (distOP)) + Math.atan2(py-oy , px - ox), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
+
         } else if (1 == Math.sin(0)) {
             whichPath = "RED B";
             if (getCompassHeading() < 1 && getCompassHeading() > -1) {
@@ -200,7 +204,7 @@ public class ChallengeOne {
         if ((rotation && direction == 1) || (!rotation && direction == -1)) {
             //cw forward = ccw backwards = left faster
             return new AutonomousSegment(radius * Math.abs(angle) * direction, 
-                                        angle, 
+                                        angle * -1, 
                                         prev,
                                         new double[] {OUTER_TURN_DRIVE_SPEED * direction, GetInnerTurnSpeed(radius) * direction, intakeSpeed}, 
                                         distanceGreater,
