@@ -106,21 +106,37 @@ public class ChallengeOne {
             path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI - (  Math.acos(2 * TURN_RADIUS / (distMO)) + Math.acos(2 * TURN_RADIUS / (distOP)) + Math.atan2(oy-my, ox-mx) - Math.atan2(py-oy, px-ox) ), 1, false, INTAKE_SPEED, path.get(path.size() - 1)));
             path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / (distOP))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
             path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI/2 - Math.acos(2 * TURN_RADIUS / (distOP)) + Math.atan2(py-oy , px - ox), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(330-px, 1, 0, path.get(path.size() - 1))); //increase 330 if robot is stopping too soon
 
-        } else if (1 == Math.sin(0)) {
+        } else if (getCompassHeading() < -15) {
             whichPath = "RED B";
-            if (getCompassHeading() < 1 && getCompassHeading() > -1) {
-                //add all the segments
+            
+            
 
-
-            }
-        } else if (1 == Math.sin(0)) {
+        } else if (getCompassHeading() < -1 && getCompassHeading() > -15) {
             whichPath = "BLUE A";
-            if (getCompassHeading() < 1 && getCompassHeading() > -1) {
-                //add all the segments
+            
+            double kx = 30;
+            double ky = 30;
+            double nx = 180 - TURN_RADIUS * Math.cos(Math.atan(-1.38743));
+            double ny = 30 - TURN_RADIUS * Math.sin(Math.atan(-1.38743));
+            double distKN = Math.sqrt(Math.pow(kx-nx,2)+Math.pow((ky-ny),2));
 
+            double zx = 210 - TURN_RADIUS * Math.cos(Math.PI + Math.atan(-2.41421));
+            double zy = 120 - TURN_RADIUS * Math.sin(Math.PI + Math.atan(-2.41421));
+            double distNZ = Math.sqrt(Math.pow(nx-zx,2)+Math.pow((ny-zy),2));
 
-            }
+            double a1x = 270 + TURN_RADIUS * Math.cos(Math.atan(4.23607));
+            double a1y = 90 + TURN_RADIUS * Math.sin(Math.atan(4.23607));
+            double distZA1 = Math.sqrt(Math.pow(zx-a1x,2)+Math.pow((zy-a1y),2));
+
+            path.add(createStraightAutonomousSegment(distKN * Math.sin(Math.acos(TURN_RADIUS/distKN)), 1, 0, new AutonomousSegment(false)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI - ( Math.acos(2 * TURN_RADIUS / distNZ) - Math.atan2(zy-ny,zx-nx) + Math.acos(TURN_RADIUS/distKN) + Math.atan2(ny-ky,nx-kx) ), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / (distNZ))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI - (  Math.acos(2 * TURN_RADIUS / (distZA1)) + Math.acos(2 * TURN_RADIUS / (distNZ)) + Math.atan2(a1y-zy, a1x-zx) - Math.atan2(zy-ny, zx-nx) ), 1, false, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / (distZA1))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI/2 - (Math.acos(2 * TURN_RADIUS / (distZA1)) + Math.atan2(a1y-zy , a1x - zx)), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(330-a1x, 1, 0, path.get(path.size() - 1))); //increase 330 if robot is stopping too soon
         } else {
             whichPath = "BLUE B";
             if (getCompassHeading() < 1 && getCompassHeading() > -1) {
