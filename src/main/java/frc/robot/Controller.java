@@ -48,7 +48,7 @@ public class Controller{
     private ChallengeFour cFour;
     private ChallengeFive cFive;
     //-1 = testing, 1 = challenge one, 2 = challenge 2... 5 = challenge 5
-    private int challengeNumber = -1; 
+    private int challengeNumber = 4; 
 
 
 
@@ -263,5 +263,9 @@ public class Controller{
    
     public void resetDistance() {
         wheels.resetRotations();
+    }
+
+    public void inverseWheels() {
+        wheels.inverse();
     }
 }

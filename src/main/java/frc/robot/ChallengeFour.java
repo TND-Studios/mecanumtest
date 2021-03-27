@@ -143,7 +143,9 @@ public class ChallengeFour {
         if(xController.getYButtonPressed()) {
             shooterSpeed -= 0.1;
         }
-
+        if (xController.getAButtonPressed()) { 
+            controller.inverseWheels();
+        }
         // Use triggers to control shooter
         // Left trigger 
         if(xController.getTriggerAxis(Hand.kLeft) > 0) {
