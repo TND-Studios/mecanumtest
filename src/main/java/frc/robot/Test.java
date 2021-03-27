@@ -14,12 +14,13 @@ public class Test {
     private WPI_TalonFX talon;
     private double shooterSpeed = 0;
 
-    private int port = 0; 
+    private int port = 6; 
     public Test(Controller cIn) {
         controller = cIn; 
         xController = controller.xcontroller;
         talon = new WPI_TalonFX(port);
         talon.setNeutralMode(NeutralMode.Brake);
+
     }
 
     public void UpdateTeleop() {
@@ -31,9 +32,12 @@ public class Test {
         | B - Reconstruct talon with lower port
         | Information displayed - Encoder position, absolute position, and velocity. Gyro X Y Z velocity. Gyro, mag, and fused reading. Talon port. Current speed. 
         */
-        SmartDashboard.putNumber("getIntegratedSensorPosition", talon.getSensorCollection().getIntegratedSensorPosition());
-        SmartDashboard.putNumber("getIntegratedSensorAbsolutePosition", talon.getSensorCollection().getIntegratedSensorAbsolutePosition());
-        SmartDashboard.putNumber("getIntegratedSensorVelocity", talon.getSensorCollection().getIntegratedSensorVelocity());
+        if (talon.isAlive()) {
+            SmartDashboard.putNumber("getIntegratedSensorPosition", talon.getSensorCollection().getIntegratedSensorPosition());
+            SmartDashboard.putNumber("getIntegratedSensorAbsolutePosition", talon.getSensorCollection().getIntegratedSensorAbsolutePosition());
+            SmartDashboard.putNumber("getIntegratedSensorVelocity", talon.getSensorCollection().getIntegratedSensorVelocity());
+            
+        }
         SmartDashboard.putNumber("gyro velocity X", controller.ahrs.getVelocityX());
         SmartDashboard.putNumber("gyro velocity Y", controller.ahrs.getVelocityY());
         SmartDashboard.putNumber("gyro velocity Z", controller.ahrs.getVelocityZ());
