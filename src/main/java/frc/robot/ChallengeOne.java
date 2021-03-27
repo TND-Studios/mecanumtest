@@ -90,6 +90,10 @@ public class ChallengeOne {
         if (getCompassHeading() < 1 && getCompassHeading() > -1) {
             whichPath = "RED A";
             
+            /*
+            Place center of front of robot at (30, my + TURN_RADIUS) at angle 0 radians
+            */
+
             //following variables are defined by the points in the geogebra diagram
             double mx = 90 - TURN_RADIUS * Math.cos(Math.atan(4.15315));
             double my = 90 - TURN_RADIUS * Math.sin(Math.atan(4.15315));
@@ -111,7 +115,10 @@ public class ChallengeOne {
 
         } else if (getCompassHeading() <= -15) {
             whichPath = "RED B";
-            
+
+            /*
+            Place center of front of robot at (ax,ay) at angle (Math.asin(TURN_RADIUS/distAE) - Math.atan2(ay-ey,ex-ax)) radians
+            */
             //following variables are defined by the points in the geogebra diagram
             double B1x = 30;
             double B1y = 120;
@@ -121,8 +128,8 @@ public class ChallengeOne {
             double distB1e = Math.sqrt(Math.pow(B1x-ex,2)+Math.pow((B1y-ey),2));
 
             double ax = 30;
-            double ay = B1y + TURN_RADIUS / Math.cos(Math.atan2(B1y-ey, ex-B1x));
-            double distAE = Math.sqrt(Math.pow(ax-ex,2)+Math.pow((ay-ey),2));
+            double ay = B1y + TURN_RADIUS / Math.cos(Math.atan2(B1y-ey, ex-B1x)); // starting x-coord
+            double distAE = Math.sqrt(Math.pow(ax-ex,2)+Math.pow((ay-ey),2));     // starting y-coord
 
             double gx = 150;
             double gy = 60 + TURN_RADIUS;
@@ -150,9 +157,12 @@ public class ChallengeOne {
         } else if (getCompassHeading() <= -1 && getCompassHeading() > -15) {
             whichPath = "BLUE A";
             
+            /*
+            Place center of front of robot at (kx,ky) at angle (Math.atan2(ny-ky, nx-kx) - Math.asin(TURN_RADIUS/distKN)) radians
+            */
             //following variables are defined by the points in the geogebra diagram
-            double kx = 30;
-            double ky = 30;
+            double kx = 30;     //starting x-coord
+            double ky = 30;     //starting y-coord
             double nx = 180 - TURN_RADIUS * Math.cos(Math.atan(-1.38743));
             double ny = 30 - TURN_RADIUS * Math.sin(Math.atan(-1.38743));
             double distKN = Math.sqrt(Math.pow(kx-nx,2)+Math.pow((ky-ny),2));
@@ -175,6 +185,9 @@ public class ChallengeOne {
         } else {
             whichPath = "BLUE B";
             
+            /*
+            Place center of front of robot at (tx,ty) at angle (Math.atan2(a1y-ty,a1x-tx) - Math.asin(TURN_RADIUS/distTA1)) radians
+            */
             //following variables are defined by the points in the geogebra diagram
             double D1x = 30;
             double D1y = 60;
@@ -182,8 +195,8 @@ public class ChallengeOne {
             double a1x = 180 - TURN_RADIUS * Math.cos(Math.atan(-2.02058));
             double a1y = 60 - TURN_RADIUS * Math.sin(Math.atan(-2.02058));
 
-            double tx = 30;
-            double ty = D1y - TURN_RADIUS / Math.cos(Math.atan2(a1y-D1y, a1x-D1x));
+            double tx = 30;                                                         //starting x-coord
+            double ty = D1y - TURN_RADIUS / Math.cos(Math.atan2(a1y-D1y, a1x-D1x)); //starting y-coord
             double distTA1 = Math.sqrt(Math.pow(tx-a1x,2)+Math.pow((ty-a1y),2));
 
             double wx = 240;
