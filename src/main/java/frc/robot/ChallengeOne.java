@@ -109,9 +109,10 @@ public class ChallengeOne {
             path.add(createCircularAutonomousSegment(TURN_RADIUS, Math.PI/2 - Math.acos(2 * TURN_RADIUS / (distOP)) + Math.atan2(py-oy , px - ox), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
             path.add(createStraightAutonomousSegment(330-px, 1, 0, path.get(path.size() - 1))); //increase 330 if robot is stopping too soon
 
-        } else if (getCompassHeading() < -15) {
+        } else if (getCompassHeading() <= -15) {
             whichPath = "RED B";
             
+            //following variables are defined by the points in the geogebra diagram
             double B1x = 30;
             double B1y = 120;
 
@@ -146,7 +147,7 @@ public class ChallengeOne {
             path.add(createStraightAutonomousSegment(0 + distJC * Math.sin(Math.acos(TURN_RADIUS/distJC)), 1, 0, path.get(path.size() - 1))); //increase 0 if robot is stopping too soon
             
 
-        } else if (getCompassHeading() < -1 && getCompassHeading() > -15) {
+        } else if (getCompassHeading() <= -1 && getCompassHeading() > -15) {
             whichPath = "BLUE A";
             
             //following variables are defined by the points in the geogebra diagram
@@ -173,11 +174,37 @@ public class ChallengeOne {
             path.add(createStraightAutonomousSegment(330-a1x, 1, 0, path.get(path.size() - 1))); //increase 330 if robot is stopping too soon
         } else {
             whichPath = "BLUE B";
-            if (getCompassHeading() < 1 && getCompassHeading() > -1) {
-                //add all the segments
+            
+            //following variables are defined by the points in the geogebra diagram
+            double D1x = 30;
+            double D1y = 60;
 
+            double a1x = 180 - TURN_RADIUS * Math.cos(Math.atan(-2.02058));
+            double a1y = 60 - TURN_RADIUS * Math.sin(Math.atan(-2.02058));
 
-            }
+            double tx = 30;
+            double ty = D1y - TURN_RADIUS / Math.cos(Math.atan2(a1y-D1y, a1x-D1x));
+            double distTA1 = Math.sqrt(Math.pow(tx-a1x,2)+Math.pow((ty-a1y),2));
+
+            double wx = 240;
+            double wy = 120 - TURN_RADIUS;
+            double distA1W = Math.sqrt(Math.pow(a1x-wx,2)+Math.pow((a1y-wy),2));
+
+            double D10x = 300;
+            double D10y = 60;
+            double distWD10 = Math.sqrt(Math.pow(wx-D10x,2)+Math.pow((wy-D10y),2));
+
+            double e1x = 330;
+            double e1y = 60 + 30*Math.tan(Math.PI-(Math.asin(TURN_RADIUS/distWD10)+Math.atan2(wy-D10y,D10x-wx)));
+            double distWE1 = Math.sqrt(Math.pow(wx-e1x,2)+Math.pow((wy-e1y),2));
+
+            path.add(createStraightAutonomousSegment(distTA1 * Math.sin(Math.acos(TURN_RADIUS/distTA1)), 1, 0, new AutonomousSegment(false)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, 2*Math.PI - ( Math.PI/2 + Math.atan2(wx-a1x,wy-a1y) + Math.acos(2*TURN_RADIUS / distA1W) + Math.acos(TURN_RADIUS / distTA1) + Math.atan2(a1y-ty,a1x-tx) ), 1, false, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / (distA1W))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
+            path.add(createCircularAutonomousSegment(TURN_RADIUS, 2*Math.PI - ( Math.acos(2*TURN_RADIUS/distA1W) + Math.atan2(wx-a1x,wy-a1y) + Math.atan2(e1x-wx,wy-e1y) + Math.acos(TURN_RADIUS / distWE1) ), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(distWE1 * Math.sin(Math.acos(TURN_RADIUS/distWE1)), 1, 0, path.get(path.size() - 1)));
+            
+
         }
 
         //add segments to paths here
