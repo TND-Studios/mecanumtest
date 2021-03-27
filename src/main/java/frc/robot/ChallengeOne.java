@@ -245,6 +245,7 @@ public class ChallengeOne {
         SmartDashboard.putNumber("Angle Facing Real (deg)", controller.getAngleFacing());
         SmartDashboard.putNumber("Angle Facing Adjusted (deg)", getAngleFacing());
         SmartDashboard.putNumber("Compass Offset", COMPASS_OFFSET);
+        SmartDashboard.putNumber("Compass Heading", getCompassHeading());
         if (currentSegment == path.size()) { 
             controller.setDriveSpeed(0, 0);
             controller.setIntakeSpeed(0);
@@ -271,6 +272,8 @@ public class ChallengeOne {
         SmartDashboard.putNumber("Angle Facing Real (deg)", controller.getAngleFacing());
         SmartDashboard.putNumber("Angle Facing Adjusted (deg)", getAngleFacing());
         SmartDashboard.putNumber("Compass Offset", COMPASS_OFFSET);
+        SmartDashboard.putNumber("Compass Heading", getCompassHeading());
+
         /* 
         
             Explain your controls here, so the driver knows what to do. 
