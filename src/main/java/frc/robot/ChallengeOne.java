@@ -25,7 +25,7 @@ public class ChallengeOne {
     private static double FEEDER_SPEED = -0.4;
     private static double ZERO = 0;
     private static double INTAKE_SPEED = -0.85;
-    private static double COMPASS_OFFSET = 0; 
+    
 
     private static final double DISTANCE_PIVOT_TO_WHEEL = 22.5 / 2;
 
@@ -38,7 +38,7 @@ public class ChallengeOne {
     private static final double TURN_RADIUS = 20.0;
 
     //put variables here
-
+    private double COMPASS_OFFSET = 0; 
 
 
     //this is the main controller class (which we have written before), which will call the update methods below. This is NOT an Xbox Controller
@@ -244,7 +244,7 @@ public class ChallengeOne {
         SmartDashboard.putNumber("Total distance travelled (in)", getDistanceTravelled());
         SmartDashboard.putNumber("Angle Facing Real (deg)", controller.getAngleFacing());
         SmartDashboard.putNumber("Angle Facing Adjusted (deg)", getAngleFacing());
-
+        SmartDashboard.putNumber("Compass Offset", COMPASS_OFFSET);
         if (currentSegment == path.size()) { 
             controller.setDriveSpeed(0, 0);
             controller.setIntakeSpeed(0);
@@ -265,7 +265,12 @@ public class ChallengeOne {
 
     //this is called every 20 milliseconds during teleop (manually controlled by human with xboxcontroller)
     public void UpdateTeleop() {
-
+        SmartDashboard.putString("Current Path", whichPath);
+        SmartDashboard.putNumber("Current Segment", currentSegment);
+        SmartDashboard.putNumber("Total distance travelled (in)", getDistanceTravelled());
+        SmartDashboard.putNumber("Angle Facing Real (deg)", controller.getAngleFacing());
+        SmartDashboard.putNumber("Angle Facing Adjusted (deg)", getAngleFacing());
+        SmartDashboard.putNumber("Compass Offset", COMPASS_OFFSET);
         /* 
         
             Explain your controls here, so the driver knows what to do. 
@@ -277,6 +282,7 @@ public class ChallengeOne {
         controller.setDriveSpeed(xController.getY(Hand.kLeft), xController.getY(Hand.kRight));
 
         if (xController.getBumper(Hand.kLeft)) { controller.calibrate(); }
+        if (Math.abs(xController.getTriggerAxis(Hand.kLeft)) > 0.05) COMPASS_OFFSET += xController.getTriggerAxis(Hand.kLeft);
 
     }
 
