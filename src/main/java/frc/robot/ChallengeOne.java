@@ -202,7 +202,7 @@ public class ChallengeOne {
             path.add(createCircularAutonomousSegment(TURN_RADIUS, 2*Math.PI - ( Math.PI/2 + Math.atan2(wx-a1x,wy-a1y) + Math.acos(2*TURN_RADIUS / distA1W) + Math.acos(TURN_RADIUS / distTA1) + Math.atan2(a1y-ty,a1x-tx) ), 1, false, INTAKE_SPEED, path.get(path.size() - 1)));
             path.add(createStraightAutonomousSegment(Math.tan(Math.acos(2 * TURN_RADIUS / (distA1W))) * TURN_RADIUS * 2, 1, 0, path.get(path.size() - 1)));
             path.add(createCircularAutonomousSegment(TURN_RADIUS, 2*Math.PI - ( Math.acos(2*TURN_RADIUS/distA1W) + Math.atan2(wx-a1x,wy-a1y) + Math.atan2(e1x-wx,wy-e1y) + Math.acos(TURN_RADIUS / distWE1) ), 1, true, INTAKE_SPEED, path.get(path.size() - 1)));
-            path.add(createStraightAutonomousSegment(distWE1 * Math.sin(Math.acos(TURN_RADIUS/distWE1)), 1, 0, path.get(path.size() - 1)));
+            path.add(createStraightAutonomousSegment(distWE1 * Math.sin(Math.acos(TURN_RADIUS/distWE1)), 1, INTAKE_SPEED, path.get(path.size() - 1)));
             
 
         }
