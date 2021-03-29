@@ -1,15 +1,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-//import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-//import edu.wpi.first.wpilibj.Servo;
-//import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Controller{
     // THE VALUES FOR THE DOUBLES BELOW NEED TO BE CONFIGURED MANUALLY
@@ -48,7 +48,7 @@ public class Controller{
     private ChallengeFour cFour;
     private ChallengeFive cFive;
     //-1 = testing, 1 = challenge one, 2 = challenge 2... 5 = challenge 5
-    private int challengeNumber = -1; 
+    private int challengeNumber = 4; 
 
 
 
@@ -261,4 +261,17 @@ public class Controller{
         ahrs.calibrate();
     }
 
+
+    public void diffDrive(double s1, double s2, Wheels.DriveType driveType) {
+        wheels.diffDrive(s1, s2, driveType);
+    }
+   
+    public void resetDistance() {
+        wheels.resetRotations();
+    }
+
+    public void inverseWheels() {
+        wheels.inverse();
+    }
 }
+
