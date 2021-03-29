@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 //import com.ctre.phoenix.motorcontrol.ControlMode;
 //import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -18,11 +19,17 @@ public class Wheels {
     private boolean inverseState;
 
     public Wheels(int fL, int bL, int fR, int bR) {
+        //initialize motor objects
         frontLeft = new WPI_TalonSRX(fL);
         backLeft = new WPI_TalonSRX(bL);
         frontRight = new WPI_TalonSRX(fR);
         backRight = new WPI_TalonSRX(bR);
-       
+        //so motors brake when speed is 0
+        frontRight.setNeutralMode(NeutralMode.Brake);
+        frontLeft.setNeutralMode(NeutralMode.Brake);
+        backRight.setNeutralMode(NeutralMode.Brake);
+        backLeft.setNeutralMode(NeutralMode.Brake);
+        //
         inverseState = false;
         frontLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         backRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);

@@ -76,7 +76,7 @@ public class Controller{
         hookUp = false;
 
         cOne = new ChallengeOne(this);
-        cTwo = new ChallengeTwo(this);
+        cTwo = new ChallengeTwo(this, 1);
         cThree = new ChallengeThree(this);
         cFour = new ChallengeFour(this);
         cFive = new ChallengeFive(this);
@@ -233,7 +233,7 @@ public class Controller{
     public double getAngleFacing() 
     {
         // return value is in degrees
-        return ahrs.getAngle();
+        return ahrs.getAngle() * -1;
     }
     
     public double getDistanceTravelled(String pos) {
@@ -256,6 +256,11 @@ public class Controller{
     public void setFeederSpeed(double v) {
         shooter.fire(v);
     }
+    
+    public void calibrate() {
+        ahrs.calibrate();
+    }
+
 
     public void diffDrive(double s1, double s2, Wheels.DriveType driveType) {
         wheels.diffDrive(s1, s2, driveType);
@@ -269,3 +274,4 @@ public class Controller{
         wheels.inverse();
     }
 }
+
