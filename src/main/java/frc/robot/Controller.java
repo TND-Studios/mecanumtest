@@ -257,6 +257,11 @@ public class Controller{
         shooter.fire(v);
     }
     
+
+    public double getCompassHeading() {
+        return ahrs.getCompassHeading();
+    }
+
     public void calibrate() {
         ahrs.calibrate();
     }
@@ -274,4 +279,5 @@ public class Controller{
         wheels.inverse();
     }
 }
+
 
