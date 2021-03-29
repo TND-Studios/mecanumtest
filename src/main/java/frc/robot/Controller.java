@@ -233,7 +233,7 @@ public class Controller{
     public double getAngleFacing() 
     {
         // return value is in degrees
-        return ahrs.getAngle();
+        return ahrs.getAngle() * -1;
     }
     
     public double getDistanceTravelled(String pos) {
