@@ -14,38 +14,38 @@ public class Wheels {
 
     public enum DriveType { TANK, ARCADE }
 
-    private WPI_TalonSRX frontLeft, backLeft, frontRight, backRight;
+    private WPI_TalonFX frontLeft;
+    private WPI_TalonFX backLeft;
+    private WPI_TalonFX frontRight;
+    private WPI_TalonFX backRight;
     private DifferentialDrive wheels;
     private boolean inverseState;
 
     public Wheels(int fL, int bL, int fR, int bR) {
         //initialize motor objects
-        frontLeft = new WPI_TalonSRX(fL);
-        backLeft = new WPI_TalonSRX(bL);
-        frontRight = new WPI_TalonSRX(fR);
-        backRight = new WPI_TalonSRX(bR);
+        frontLeft = new WPI_TalonFX(fL);
+        backLeft = new WPI_TalonFX(bL);
+        frontRight = new WPI_TalonFX(fR);
+        backRight = new WPI_TalonFX(bR);
         //so motors brake when speed is 0
         frontRight.setNeutralMode(NeutralMode.Brake);
         frontLeft.setNeutralMode(NeutralMode.Brake);
         backRight.setNeutralMode(NeutralMode.Brake);
         backLeft.setNeutralMode(NeutralMode.Brake);
-        //
+        
         inverseState = false;
-        frontLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-        backRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-
         wheels = new DifferentialDrive(new SpeedControllerGroup(frontLeft, backLeft), new SpeedControllerGroup(frontRight, backRight));
     }
 
     public double getRotations(String location) { 
         if (location == "fL") {
-            double temp = frontLeft.getSelectedSensorPosition();
-            double val = temp / 4096;
+            double temp = frontLeft.getSensorCollection().getIntegratedSensorPosition();
+            double val = temp / 2048;
             return val;
         }
         if (location == "bR") {
-            double temp = backRight.getSelectedSensorPosition();
-            double val = temp / 4096;
+            double temp = backRight.getSensorCollection().getIntegratedSensorPosition();
+            double val = temp / 2048;
             return val;
             
         }
@@ -60,9 +60,9 @@ public class Wheels {
     // Negative speed turns wheels backwards
     public void drive(double leftSpeed, double rightSpeed) {
 
-        leftSpeed *= 0.6;
-        rightSpeed *= 0.6;
-        if(inverseState)
+        leftSpeed *= 0.8;
+        rightSpeed *= 0.8;
+        if(!inverseState)
         {
             //if inversState is true, reverse the speeds and call drive 
             frontLeft.set(leftSpeed);

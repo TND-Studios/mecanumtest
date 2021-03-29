@@ -33,6 +33,7 @@ public class ChallengeFour {
     private double leftStickX;
     private double leftStickY;
     private double encoderDistance; 
+    private int inverseMultiplier = 1; 
 
     /* 
         Instructions on how to get data from the robot:
@@ -102,7 +103,7 @@ public class ChallengeFour {
                 > Rev up the shooter (big wheel) using left trigger and feed (blue wheel) using right trigger
                 > Increase/decrease shooter speed using X/Y buttons
                 > Start intake using left bumper, reverse intake using right bumper
-                > Reset encoder using A button
+                > Inverse wheels using A button
                 > Toggle between tank/arcade drive using B button
         
         */
@@ -117,9 +118,9 @@ public class ChallengeFour {
         SmartDashboard.putNumber("Shooter speed", shooterSpeed); 
 
         // Reset distance recorded by encoder using A button
-        if (xController.getAButtonPressed()) {
-            controller.resetDistance();
-        }
+        // if (xController.getAButtonPressed()) {
+        //     controller.resetDistance();
+        // }
 
         // Toggle between arcade/tank drive using B button
         if(xController.getBButtonPressed()) {
@@ -130,10 +131,10 @@ public class ChallengeFour {
         }
         switch(driveType) {
             case ARCADE:
-                controller.diffDrive(xController.getY(Hand.kLeft), xController.getX(Hand.kLeft), driveType);
+                controller.diffDrive(inverseMultiplier * xController.getY(Hand.kLeft), inverseMultiplier * xController.getX(Hand.kLeft), driveType);
                 break;
             case TANK:
-                controller.diffDrive(xController.getY(Hand.kLeft), xController.getY(Hand.kRight), driveType);
+                controller.diffDrive(inverseMultiplier * xController.getY(Hand.kLeft), inverseMultiplier * xController.getY(Hand.kRight), driveType);
         }
 
         // Use X/Y buttons to increase/decrease launcher speed
@@ -144,7 +145,7 @@ public class ChallengeFour {
             shooterSpeed -= 0.1;
         }
         if (xController.getAButtonPressed()) { 
-            controller.inverseWheels();
+            inverseMultiplier *= -1; 
         }
         // Use triggers to control shooter
         // Left trigger 
