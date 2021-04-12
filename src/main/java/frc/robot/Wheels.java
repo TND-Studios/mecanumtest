@@ -14,19 +14,19 @@ import com.ctre.phoenix.motorcontrol.can.*;
 public class Wheels {
 
 
-    private WPI_TalonSRX frontLeft;
-    private WPI_TalonSRX backLeft;
-    private WPI_TalonSRX frontRight;
-    private WPI_TalonSRX backRight;
+    private WPI_TalonFX frontLeft;
+    private WPI_TalonFX backLeft;
+    private WPI_TalonFX frontRight;
+    private WPI_TalonFX backRight;
     private MecanumDrive wheels;
     private boolean inverseState;
 
     public Wheels(int fL, int bL, int fR, int bR) {
         //initialize motor objects
-        frontLeft = new WPI_TalonSRX(fL);
-        backLeft = new WPI_TalonSRX(bL);
-        frontRight = new WPI_TalonSRX(fR);
-        backRight = new WPI_TalonSRX(bR);
+        frontLeft = new WPI_TalonFX(fL);
+        backLeft = new WPI_TalonFX(bL);
+        frontRight = new WPI_TalonFX(fR);
+        backRight = new WPI_TalonFX(bR);
         //so motors brake when speed is 0
         frontRight.setNeutralMode(NeutralMode.Brake);
         frontLeft.setNeutralMode(NeutralMode.Brake);
@@ -38,7 +38,7 @@ public class Wheels {
             frontLeft, 
             backLeft, 
             frontRight,
-            backLeft);
+            backRight);
     }
 
     // Negative speed turns wheels backwards

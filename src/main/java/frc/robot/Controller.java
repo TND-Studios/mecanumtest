@@ -24,8 +24,8 @@ public class Controller{
 
       
   
-        // fL, fR, bL, bR
-        wheels = new Wheels(6, 8, 3, 1);
+        // fL, bL, fR, bR
+        wheels = new Wheels(33, 31, 30, 34);
         xcontroller = new XboxController(0);
 
 
@@ -33,8 +33,14 @@ public class Controller{
     }
     
     public void UpdateTeleop() {
-
-        wheels.drive(xcontroller.getY(Hand.kLeft), xcontroller.getX(Hand.kLeft), xcontroller.getX(Hand.kRight));
+        double m = 0.5;
+        double y = xcontroller.getY(Hand.kLeft) * -m;
+        double x = xcontroller.getY(Hand.kLeft) * m;
+        double r = xcontroller.getX(Hand.kRight) * m;
+        // if (Math.abs(y) < 0.05) y = 0; 
+        // if (Math.abs(x) < 0.05) x = 0; 
+        // if (Math.abs(r) < 0.05) r = 0;
+        wheels.drive(x, y, r);
 
     }    
 
