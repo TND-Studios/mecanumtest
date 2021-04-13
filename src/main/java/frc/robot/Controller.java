@@ -17,7 +17,7 @@ public class Controller{
     //main controller
     public XboxController xcontroller;
     private Wheels wheels;
-
+    private AHRS navx; 
 
     public void controllerInit()
     {
@@ -27,6 +27,7 @@ public class Controller{
         // fL, bL, fR, bR
         wheels = new Wheels(33, 31, 30, 34);
         xcontroller = new XboxController(0);
+        navx = new AHRS(SPI.Port.kMXP);
 
 
 
@@ -46,8 +47,8 @@ public class Controller{
         SmartDashboard.putNumber("forward speed", forwardSpeed);
         SmartDashboard.putNumber("right speed", rightSpeed);
         SmartDashboard.putNumber("rotation speed", rotationSpeed);
-        
-        wheels.drive(forwardSpeed, rightSpeed, rotationSpeed);
+
+        wheels.drive(forwardSpeed, rightSpeed, rotationSpeed, navx.getAngle());
 
     }    
 

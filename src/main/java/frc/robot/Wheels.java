@@ -52,13 +52,14 @@ public class Wheels {
     }
 
     // Negative speed turns wheels backwards
-    public void drive(double forwardSpeed, double rightSpeed, double rotationSpeed) {
+    public void drive(double forwardSpeed, double rightSpeed, double rotationSpeed, double angle) {
 
-        wheels.driveCartesian(rightSpeed, forwardSpeed, rotationSpeed);
+        wheels.driveCartesian(rightSpeed, forwardSpeed, rotationSpeed, angle);
         SmartDashboard.putNumber("front left", frontLeft.get());
         SmartDashboard.putNumber("back left", backLeft.get());
         SmartDashboard.putNumber("front right", frontRight.get());
         SmartDashboard.putNumber("back right", backRight.get());
+        
     }
 
    
