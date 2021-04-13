@@ -2,6 +2,7 @@ package frc.robot;
 
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 
 import edu.wpi.first.wpilibj.SpeedController;
 //import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -35,6 +36,8 @@ public class Wheels {
         backRight.setNeutralMode(NeutralMode.Brake);
         backLeft.setNeutralMode(NeutralMode.Brake);
         
+        frontRight.setInverted(true);
+        backRight.setInverted(true);
         inverseState = false;
         wheels = new MecanumDrive(
             frontLeft, 
