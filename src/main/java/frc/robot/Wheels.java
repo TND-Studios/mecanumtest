@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.SpeedController;
 //import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.ctre.phoenix.motorcontrol.can.*;
 //import java.lang.Math;
 
@@ -41,12 +43,17 @@ public class Wheels {
             backRight);
 
         wheels.setDeadband(0.025);
+        
     }
 
     // Negative speed turns wheels backwards
     public void drive(double forwardSpeed, double rightSpeed, double rotationSpeed) {
 
         wheels.driveCartesian(rightSpeed, forwardSpeed, rotationSpeed);
+        SmartDashboard.putNumber("front left", frontLeft.get());
+        SmartDashboard.putNumber("back left", backLeft.get());
+        SmartDashboard.putNumber("front right", frontRight.get());
+        SmartDashboard.putNumber("back right", backRight.get());
     }
 
    

@@ -33,7 +33,7 @@ public class Controller{
     }
     
     public void UpdateTeleop() {
-        double m = 0.5;
+        double m = -0.5;
         double forwardSpeed = xcontroller.getY(Hand.kLeft) * -m;
         double rightSpeed = xcontroller.getX(Hand.kLeft) * m;
         double rotationSpeed = xcontroller.getX(Hand.kRight) * m;
