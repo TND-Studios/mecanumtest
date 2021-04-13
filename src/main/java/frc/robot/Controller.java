@@ -34,13 +34,11 @@ public class Controller{
     
     public void UpdateTeleop() {
         double m = 0.5;
-        double y = xcontroller.getY(Hand.kLeft) * -m;
-        double x = xcontroller.getY(Hand.kLeft) * m;
-        double r = xcontroller.getX(Hand.kRight) * m;
-        // if (Math.abs(y) < 0.05) y = 0; 
-        // if (Math.abs(x) < 0.05) x = 0; 
-        // if (Math.abs(r) < 0.05) r = 0;
-        wheels.drive(x, y, r);
+        double forwardSpeed = xcontroller.getY(Hand.kLeft) * -m;
+        double rightSpeed = xcontroller.getX(Hand.kLeft) * m;
+        double rotationSpeed = xcontroller.getX(Hand.kRight) * m;
+
+        wheels.drive(forwardSpeed, rightSpeed, rotationSpeed);
 
     }    
 

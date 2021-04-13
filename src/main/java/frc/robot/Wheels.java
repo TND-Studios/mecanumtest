@@ -39,12 +39,14 @@ public class Wheels {
             backLeft, 
             frontRight,
             backRight);
+
+        wheels.setDeadband(0.025);
     }
 
     // Negative speed turns wheels backwards
-    public void drive(double xSpeed, double ySpeed, double rotationSpeed) {
+    public void drive(double forwardSpeed, double rightSpeed, double rotationSpeed) {
 
-        wheels.driveCartesian(ySpeed, xSpeed, rotationSpeed);
+        wheels.driveCartesian(rightSpeed, forwardSpeed, rotationSpeed);
     }
 
    
