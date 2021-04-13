@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     //controller1 = new XboxController(0);
     //controller2 = new XboxController(1);
 
-    CameraServer.getInstance().startAutomaticCapture(0);
+    //CameraServer.getInstance().startAutomaticCapture(0);
 
   }
 
