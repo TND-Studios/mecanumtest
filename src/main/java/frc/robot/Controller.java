@@ -18,6 +18,8 @@ public class Controller{
     public XboxController xcontroller;
     private Wheels wheels;
     private AHRS navx; 
+    private double offset; 
+    private Timer t; 
 
     public void controllerInit()
     {
@@ -28,13 +30,14 @@ public class Controller{
         wheels = new Wheels(33, 31, 30, 34);
         xcontroller = new XboxController(0);
         navx = new AHRS(SPI.Port.kMXP);
-
+        t.start();
 
 
     }
     
     public void UpdateTeleop() {
         double m = 0.5;
+        offset = t.get() / 40; 
 
         double forwardSpeed = xcontroller.getY(Hand.kLeft) * -m;
         double rightSpeed = xcontroller.getX(Hand.kLeft) * m;
@@ -48,6 +51,7 @@ public class Controller{
         SmartDashboard.putNumber("right speed", rightSpeed);
         SmartDashboard.putNumber("rotation speed", rotationSpeed);
         SmartDashboard.putNumber("navx reading", navx.getAngle());
+        SmartDashboard.putNumber("navx offset", offset);
         wheels.drive(forwardSpeed, rightSpeed, rotationSpeed, navx.getAngle());
 
         if (xcontroller.getAButtonReleased()) { navx.calibrate(); navx.zeroYaw(); }
