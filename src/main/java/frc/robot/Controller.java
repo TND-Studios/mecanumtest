@@ -30,6 +30,7 @@ public class Controller{
         wheels = new Wheels(33, 31, 30, 34);
         xcontroller = new XboxController(0);
         navx = new AHRS(SPI.Port.kMXP);
+        t = new Timer();
         t.start();
 
 
@@ -54,7 +55,7 @@ public class Controller{
         SmartDashboard.putNumber("navx offset", offset);
         wheels.drive(forwardSpeed, rightSpeed, rotationSpeed, navx.getAngle());
 
-        if (xcontroller.getAButtonReleased()) { navx.calibrate(); navx.zeroYaw(); }
+        if (xcontroller.getAButtonReleased()) { navx.calibrate(); navx.zeroYaw(); t.reset(); t.start(); }
 
         SmartDashboard.putBoolean("navx calibrating?", navx.isCalibrating());
 
