@@ -38,7 +38,7 @@ public class Controller{
 
         double forwardSpeed = xcontroller.getY(Hand.kLeft) * -m;
         double rightSpeed = xcontroller.getX(Hand.kLeft) * m;
-        double rotationSpeed = xcontroller.getX(Hand.kRight) * m;
+        double rotationSpeed = xcontroller.getX(Hand.kRight) * m * 0.5;
 
         if (Math.abs(forwardSpeed) < 0.075) { forwardSpeed = 0; }
         if (Math.abs(rightSpeed) < 0.075) { rightSpeed = 0; }
@@ -49,6 +49,10 @@ public class Controller{
         SmartDashboard.putNumber("rotation speed", rotationSpeed);
         SmartDashboard.putNumber("navx reading", navx.getAngle());
         wheels.drive(forwardSpeed, rightSpeed, rotationSpeed, navx.getAngle());
+
+        if (xcontroller.getAButtonReleased()) { navx.calibrate(); }
+
+        SmartDashboard.putBoolean("navx calibrating?", navx.isCalibrating());
 
     }    
 
