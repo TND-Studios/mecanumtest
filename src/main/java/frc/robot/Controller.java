@@ -34,9 +34,9 @@ public class Controller{
     }
     
     public void UpdateTeleop() {
-        double m = -0.5;
+        double m = 0.5;
 
-        double forwardSpeed = xcontroller.getY(Hand.kLeft) * m;
+        double forwardSpeed = xcontroller.getY(Hand.kLeft) * -m;
         double rightSpeed = xcontroller.getX(Hand.kLeft) * m;
         double rotationSpeed = xcontroller.getX(Hand.kRight) * m;
 
@@ -47,7 +47,7 @@ public class Controller{
         SmartDashboard.putNumber("forward speed", forwardSpeed);
         SmartDashboard.putNumber("right speed", rightSpeed);
         SmartDashboard.putNumber("rotation speed", rotationSpeed);
-
+        SmartDashboard.putNumber("navx reading", navx.getAngle());
         wheels.drive(forwardSpeed, rightSpeed, rotationSpeed, navx.getAngle());
 
     }    
