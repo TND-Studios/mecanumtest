@@ -42,7 +42,7 @@ public class Wheels {
             frontRight,
             backRight);
 
-        wheels.setDeadband(0.025);
+        wheels.setDeadband(0.075);
         
     }
 
