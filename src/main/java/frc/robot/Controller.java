@@ -38,7 +38,7 @@ public class Controller{
     
     public void UpdateTeleop() {
         double m = 0.5;
-        offset =  (int)(t.get() * 100) / 20 / 100; 
+        offset =  (int)(t.get() * 100.0) / 20.0 / 100.0; 
 
         double forwardSpeed = xcontroller.getY(Hand.kLeft) * -m;
         double rightSpeed = xcontroller.getX(Hand.kLeft) * m;
