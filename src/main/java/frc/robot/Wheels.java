@@ -38,6 +38,8 @@ public class Wheels {
         
         frontRight.setInverted(true);
         backRight.setInverted(true);
+        frontLeft.setInverted(true);
+        backLeft.setInverted(true);
         inverseState = false;
         wheels = new MecanumDrive(
             frontLeft, 
