@@ -38,7 +38,7 @@ public class Controller{
     
     public void UpdateTeleop() {
         double m = 0.5;
-        offset = t.get() / 20; 
+        offset =  (int)(t.get() * 100) / 20 / 100; 
 
         double forwardSpeed = xcontroller.getY(Hand.kLeft) * -m;
         double rightSpeed = xcontroller.getX(Hand.kLeft) * m;
@@ -51,11 +51,11 @@ public class Controller{
         SmartDashboard.putNumber("forward speed", forwardSpeed);
         SmartDashboard.putNumber("right speed", rightSpeed);
         SmartDashboard.putNumber("rotation speed", rotationSpeed);
-        SmartDashboard.putNumber("navx reading", navx.getAngle());
+        SmartDashboard.putNumber("navx reading", navx.getAngle() + offset);
         SmartDashboard.putNumber("navx offset", offset);
-        wheels.drive(forwardSpeed, rightSpeed, rotationSpeed, navx.getAngle());
+        wheels.drive(forwardSpeed, rightSpeed, rotationSpeed, navx.getAngle() + offset);
 
-        if (xcontroller.getAButtonReleased()) { navx.calibrate(); navx.zeroYaw(); t.reset(); t.start(); }
+        if (xcontroller.getAButtonReleased()) { navx.calibrate(); navx.zeroYaw(); t.reset(); t.start(); offset = 0; }
 
         SmartDashboard.putBoolean("navx calibrating?", navx.isCalibrating());
 
