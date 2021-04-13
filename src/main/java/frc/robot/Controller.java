@@ -50,7 +50,7 @@ public class Controller{
         SmartDashboard.putNumber("navx reading", navx.getAngle());
         wheels.drive(forwardSpeed, rightSpeed, rotationSpeed, navx.getAngle());
 
-        if (xcontroller.getAButtonReleased()) { navx.calibrate(); }
+        if (xcontroller.getAButtonReleased()) { navx.calibrate(); navx.zeroYaw(); }
 
         SmartDashboard.putBoolean("navx calibrating?", navx.isCalibrating());
 
