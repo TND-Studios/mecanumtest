@@ -37,7 +37,9 @@ public class Controller{
         double forwardSpeed = xcontroller.getY(Hand.kLeft) * -m;
         double rightSpeed = xcontroller.getX(Hand.kLeft) * m;
         double rotationSpeed = xcontroller.getX(Hand.kRight) * m;
-
+        SmartDashboard.putNumber("forward speed", forwardSpeed);
+        SmartDashboard.putNumber("right speed", rightSpeed);
+        SmartDashboard.putNumber("rotation speed", rotationSpeed);
         wheels.drive(forwardSpeed, rightSpeed, rotationSpeed);
 
     }    
