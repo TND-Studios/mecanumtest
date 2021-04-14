@@ -61,6 +61,16 @@ public class Wheels {
         SmartDashboard.putNumber("back right", backRight.get());
         
     }
+    
+    public void drive(double forwardSpeed, double rightSpeed, double rotationSpeed) {
+
+        wheels.driveCartesian(rightSpeed, forwardSpeed, rotationSpeed);
+        SmartDashboard.putNumber("front left", frontLeft.get());
+        SmartDashboard.putNumber("back left", backLeft.get());
+        SmartDashboard.putNumber("front right", frontRight.get());
+        SmartDashboard.putNumber("back right", backRight.get());
+        
+    }
 
    
 
